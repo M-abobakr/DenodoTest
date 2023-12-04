@@ -1,0 +1,5 @@
+﻿CREATE OR REPLACE VIEW iv_customer_address FOLDER = '/integration' AS SELECT bv_wo_customer.id AS id, bv_wo_customer.customer_code_internal AS customer_code_internal, bv_wo_customer.first_name AS first_name, bv_wo_customer.last_name AS last_name, bv_wo_customer.email AS email, bv_wo_customer.phone AS phone, bv_wo_customer.registered_date AS registered_date, register(bv_wo_customer.main_address, bv_wo_customer.main_country, bv_wo_customer.main_postcode) AS address FROM bv_wo_customer;
+
+ALTER VIEW iv_customer_address
+ LAYOUT (bv_wo_customer = [20, 20, 200, 200]);
+

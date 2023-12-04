@@ -1,0 +1,31 @@
+﻿# REQUIRES-PROPERTIES-FILE - # Do not remove this comment!
+CREATE OR REPLACE DATASOURCE JDBC db_web_orders
+    FOLDER = '/connectivity/data sources'
+    DRIVERCLASSNAME = 'oracle.jdbc.OracleDriver'
+    DATABASEURI = '${databases.training_db.folder.connectivity.folder.data sources.datasources.jdbc.db_web_orders.DATABASEURI}'
+    USERNAME = '${databases.training_db.folder.connectivity.folder.data sources.datasources.jdbc.db_web_orders.USERNAME}'
+    USERPASSWORD = '${databases.training_db.folder.connectivity.folder.data sources.datasources.jdbc.db_web_orders.USERPASSWORD}' ${databases.training_db.folder.connectivity.folder.data sources.datasources.jdbc.db_web_orders.USERPASSWORD.ENCRYPTED}
+    CLASSPATH = 'oracle-11g'
+    DATABASENAME = 'oracle'
+    DATABASEVERSION = '11g'
+    FETCHSIZE = 1000
+    VALIDATIONQUERY = 'SELECT COUNT(*) FROM SYS.DUAL'
+    INITIALSIZE = 4
+    MAXIDLE = -1
+    MINIDLE = 0
+    MAXACTIVE = 20
+    EXHAUSTEDACTION = 1
+    TESTONBORROW = true
+    TESTONRETURN = false
+    TESTWHILEIDLE = false
+    TIMEBETWEENEVICTION = -1
+    NUMTESTPEREVICTION = 3
+    MINEVICTABLETIME = 1800000
+    POOLPREPAREDSTATEMENTS = false
+    MAXOPENPREPAREDSTATEMENTS = -1
+    PROPERTIES ('includeSynonyms'='false', 'remarksReporting'='false')
+    DATA_LOAD_CONFIGURATION (
+        USE_FOR_QUERY_OPTIMIZATION = DATA_MOVEMENT
+        BATCHINSERTSIZE = 200
+    );
+

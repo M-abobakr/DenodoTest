@@ -1,0 +1,5 @@
+﻿CREATE OR REPLACE VIEW bv_wo_orders_items FOLDER = '/integration' AS SELECT bv_wo_orders.id AS id, bv_wo_orders.customer_code AS customer_code, bv_wo_orders.status AS status, bv_wo_orders.date_placed AS date_placed, bv_wo_orders.date_delivered AS date_delivered, bv_wo_orders.date_closed AS date_closed, bv_wo_order_item.order_id AS order_id, bv_wo_order_item.product_id AS product_id FROM bv_wo_orders AS bv_wo_orders INNER JOIN bv_wo_order_item AS bv_wo_order_item ON bv_wo_orders.id = bv_wo_order_item.order_id ;
+
+ALTER VIEW bv_wo_orders_items
+ LAYOUT (bv_wo_orders = [89, 22, 200, 200], bv_wo_order_item = [458, 11, 200, 200]);
+

@@ -1,0 +1,5 @@
+﻿CREATE OR REPLACE VIEW iv_interactions FOLDER = '/connectivity/base views' AS SELECT status_code, caller_phone, case_id, agent_id, customer_code, interaction_date FROM (SELECT customer_code, status_code, case_id, date_call_received, caller_phone, agent_id FROM bv_cc_service_call EXTENDED UNION ALL SELECT case_creation_date AS interaction_date, customer_code, customer_phone AS caller_phone, agent_id, status_code, sr_date AS date_call_received, global_case_id AS case_id FROM bv_support_get_all_service_request);
+
+ALTER VIEW iv_interactions
+ LAYOUT (bv_cc_service_call = [20, 20, 200, 200], bv_support_get_all_service_request = [468, 18, 200, 200]);
+

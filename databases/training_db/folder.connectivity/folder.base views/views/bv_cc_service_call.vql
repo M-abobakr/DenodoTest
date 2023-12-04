@@ -1,0 +1,56 @@
+﻿# REQUIRES-PROPERTIES-FILE - # Do not remove this comment!
+CREATE OR REPLACE WRAPPER JDBC bv_cc_service_call
+    FOLDER = '/connectivity/base views'
+    DATASOURCENAME=ds_call_center
+    SCHEMANAME='${databases.training_db.folder.connectivity.folder.base views.views.jdbc.bv_cc_service_call.SCHEMANAME}' 
+    RELATIONNAME='SERVICE_CALL' 
+    OUTPUTSCHEMA (
+        call_id = 'CALL_ID' :'java.math.BigDecimal' (OPT) (sourcetyperadix='10', sourcetypeid='3', sourcetypename='NUMBER')  SORTABLE,
+        location_id = 'LOCATION_ID' :'java.math.BigDecimal' (OPT) (sourcetyperadix='10', sourcetypeid='3', sourcetypename='NUMBER')  SORTABLE,
+        problem_code = 'PROBLEM_CODE' :'java.math.BigDecimal' (OPT) (sourcetyperadix='10', sourcetypeid='3', sourcetypename='NUMBER')  SORTABLE,
+        status_code = 'STATUS_CODE' :'java.math.BigDecimal' (OPT) (sourcetyperadix='10', sourcetypeid='3', sourcetypename='NUMBER')  SORTABLE,
+        date_ticket_issued = 'DATE_TICKET_ISSUED' :'java.time.LocalDateTime' (OPT) (sourcetypedecimals='6', sourcetyperadix='10', sourcetypesize='11', sourcetypeid='93', sourcetypename='TIMESTAMP(6)')  SORTABLE,
+        date_call_received = 'DATE_CALL_RECEIVED' :'java.time.LocalDateTime' (OPT) (sourcetypedecimals='6', sourcetyperadix='10', sourcetypesize='11', sourcetypeid='93', sourcetypename='TIMESTAMP(6)')  SORTABLE,
+        other_details = 'OTHER_DETAILS' :'java.lang.String' (OPT) (sourcetyperadix='10', sourcetypesize='1000', sourcetypeid='12', sourcetypename='VARCHAR2')  SORTABLE,
+        caller_phone = 'CALLER_PHONE' :'java.lang.String' (OPT) (sourcetyperadix='10', sourcetypesize='17', sourcetypeid='12', sourcetypename='VARCHAR2')  SORTABLE,
+        case_id = 'CASE_ID' :'java.math.BigDecimal' (OPT) (sourcetyperadix='10', sourcetypeid='3', sourcetypename='NUMBER')  SORTABLE,
+        agent_id = 'AGENT_ID' :'java.math.BigDecimal' (OPT) (sourcetyperadix='10', sourcetypeid='3', sourcetypename='NUMBER')  SORTABLE,
+        customer_code = 'CUSTOMER_CODE' :'java.lang.String' (OPT) (sourcetyperadix='10', sourcetypesize='20', sourcetypeid='12', sourcetypename='VARCHAR2')  SORTABLE
+    );
+
+CREATE OR REPLACE TABLE bv_cc_service_call I18N us_pst (
+        call_id:decimal (sourcetypeid = '3', sourcetyperadix = '10'),
+        location_id:decimal (sourcetypeid = '3', sourcetyperadix = '10'),
+        problem_code:decimal (sourcetypeid = '3', sourcetyperadix = '10'),
+        status_code:decimal (sourcetypeid = '3', sourcetyperadix = '10'),
+        date_ticket_issued:timestamp (sourcetypeid = '93', sourcetyperadix = '10', sourcetypedecimals = '6', sourcetypesize = '11'),
+        date_call_received:timestamp (sourcetypeid = '93', sourcetyperadix = '10', sourcetypedecimals = '6', sourcetypesize = '11'),
+        other_details:text (sourcetypeid = '12', sourcetyperadix = '10', sourcetypesize = '1000'),
+        caller_phone:text (sourcetypeid = '12', sourcetyperadix = '10', sourcetypesize = '17'),
+        case_id:decimal (sourcetypeid = '3', sourcetyperadix = '10'),
+        agent_id:decimal (sourcetypeid = '3', sourcetyperadix = '10'),
+        customer_code:text (sourcetypeid = '12', sourcetyperadix = '10', sourcetypesize = '20')
+    )
+    FOLDER = '/connectivity/base views'
+    CACHE OFF
+    TIMETOLIVEINCACHE DEFAULT
+    ADD SEARCHMETHOD bv_cc_service_call(
+        I18N us_pst
+        CONSTRAINTS (
+             ADD call_id (any) OPT ANY
+             ADD location_id (any) OPT ANY
+             ADD problem_code (any) OPT ANY
+             ADD status_code (any) OPT ANY
+             ADD date_ticket_issued (any) OPT ANY
+             ADD date_call_received (any) OPT ANY
+             ADD other_details (any) OPT ANY
+             ADD caller_phone (any) OPT ANY
+             ADD case_id (any) OPT ANY
+             ADD agent_id (any) OPT ANY
+             ADD customer_code (any) OPT ANY
+        )
+        OUTPUTLIST (agent_id, call_id, caller_phone, case_id, customer_code, date_call_received, date_ticket_issued, location_id, other_details, problem_code, status_code
+        )
+        WRAPPER (jdbc bv_cc_service_call)
+    );
+

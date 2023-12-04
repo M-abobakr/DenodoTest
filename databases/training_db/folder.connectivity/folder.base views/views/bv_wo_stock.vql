@@ -1,0 +1,38 @@
+﻿# REQUIRES-PROPERTIES-FILE - # Do not remove this comment!
+CREATE OR REPLACE WRAPPER JDBC bv_wo_stock
+    FOLDER = '/connectivity/base views'
+    DATASOURCENAME=db_web_orders
+    SCHEMANAME='${databases.training_db.folder.connectivity.folder.base views.views.jdbc.bv_wo_stock.SCHEMANAME}' 
+    RELATIONNAME='STOCK' 
+    OUTPUTSCHEMA (
+        id = 'ID' :'java.math.BigDecimal' (OPT) (sourcetyperadix='10', sourcetypeid='3', sourcetypename='NUMBER')  NOT NULL SORTABLE,
+        product_id = 'PRODUCT_ID' :'java.math.BigDecimal' (OPT) (sourcetyperadix='10', sourcetypeid='3', sourcetypename='NUMBER')  NOT NULL SORTABLE,
+        distribution_code = 'DISTRIBUTION_CODE' :'java.lang.String' (OPT) (sourcetyperadix='10', sourcetypesize='100', sourcetypeid='12', sourcetypename='VARCHAR2')  NOT NULL SORTABLE,
+        storage_id = 'STORAGE_ID' :'java.math.BigDecimal' (OPT) (sourcetyperadix='10', sourcetypeid='3', sourcetypename='NUMBER')  NOT NULL SORTABLE
+    )
+    CONSTRAINT 'STOCK_PK' PRIMARY KEY ( 'ID' )
+    INDEX 'STOCK_PK' CLUSTER UNIQUE PRIMARY ( 'ID' );
+
+CREATE OR REPLACE TABLE bv_wo_stock I18N us_pst (
+        id:decimal (notnull, sourcetypeid = '3', sourcetyperadix = '10'),
+        product_id:decimal (notnull, sourcetypeid = '3', sourcetyperadix = '10'),
+        distribution_code:text (notnull, sourcetypeid = '12', sourcetyperadix = '10', sourcetypesize = '100'),
+        storage_id:decimal (notnull, sourcetypeid = '3', sourcetyperadix = '10')
+    )
+    FOLDER = '/connectivity/base views'
+    CONSTRAINT 'STOCK_PK' PRIMARY KEY ( 'id' )
+    CACHE OFF
+    TIMETOLIVEINCACHE DEFAULT
+    ADD SEARCHMETHOD bv_wo_stock(
+        I18N us_pst
+        CONSTRAINTS (
+             ADD id (any) OPT ANY
+             ADD product_id (any) OPT ANY
+             ADD distribution_code (any) OPT ANY
+             ADD storage_id (any) OPT ANY
+        )
+        OUTPUTLIST (distribution_code, id, product_id, storage_id
+        )
+        WRAPPER (jdbc bv_wo_stock)
+    );
+
