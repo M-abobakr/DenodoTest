@@ -1,0 +1,20 @@
+﻿# REQUIRES-PROPERTIES-FILE - # Do not remove this comment!
+CREATE OR REPLACE DATASOURCE XML ds_sales_search
+    FOLDER = '/connectivity/data sources'
+    ROUTE HTTP 'http.CommonsHttpClientConnection,120000' POST '${databases.training_db.folder.connectivity.folder.data sources.datasources.xml.ds_sales_search.ROUTE.HTTP.URL}'
+    POSTBODY '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<SalesPostData>
+<customerId>@{{cid}}</customerId>
+<employeeId>@{{eid}}</employeeId>
+<productId>@{{pid}}</productId>
+ </SalesPostData>'
+    MIME 'application/xml'
+    HEADERS (
+        'Accept'='application/xml', 
+        'Content-type'='application/xml'
+    )
+    AUTHENTICATION BASIC ( 
+      USER '${databases.training_db.folder.connectivity.folder.data sources.datasources.xml.ds_sales_search.ROUTE.HTTP.USER}'
+      PASSWORD '${databases.training_db.folder.connectivity.folder.data sources.datasources.xml.ds_sales_search.ROUTE.HTTP.PASSWORD}' ${databases.training_db.folder.connectivity.folder.data sources.datasources.xml.ds_sales_search.ROUTE.HTTP.PASSWORD.ENCRYPTED} )
+    PROXY OFF;
+

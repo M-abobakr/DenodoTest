@@ -1,0 +1,66 @@
+﻿# REQUIRES-PROPERTIES-FILE - # Do not remove this comment!
+CREATE OR REPLACE WRAPPER JDBC bv_hr_employees
+    FOLDER = '/connectivity/base views'
+    DATASOURCENAME=ds_human_resources
+    SCHEMANAME='${databases.training_db.folder.connectivity.folder.base views.views.jdbc.bv_hr_employees.SCHEMANAME}' 
+    RELATIONNAME='EMPLOYEES' 
+    OUTPUTSCHEMA (
+        employee_id = 'EMPLOYEE_ID' :'java.lang.Integer' (OPT) (sourcetypedecimals='0', sourcetyperadix='10', sourcetypesize='6', sourcetypeid='3', sourcetypename='NUMBER')  NOT NULL SORTABLE,
+        first_name = 'FIRST_NAME' :'java.lang.String' (OPT) (sourcetyperadix='10', sourcetypesize='20', sourcetypeid='12', sourcetypename='VARCHAR2')  SORTABLE,
+        last_name = 'LAST_NAME' :'java.lang.String' (OPT) (sourcetyperadix='10', sourcetypesize='25', sourcetypeid='12', sourcetypename='VARCHAR2')  NOT NULL SORTABLE,
+        email = 'EMAIL' :'java.lang.String' (OPT) (sourcetyperadix='10', sourcetypesize='50', sourcetypeid='12', sourcetypename='VARCHAR2')  NOT NULL SORTABLE,
+        phone_number = 'PHONE_NUMBER' :'java.lang.String' (OPT) (sourcetyperadix='10', sourcetypesize='20', sourcetypeid='12', sourcetypename='VARCHAR2')  SORTABLE,
+        hire_date = 'HIRE_DATE' :'java.time.LocalDateTime' (OPT) (sourcetyperadix='10', sourcetypesize='7', sourcetypeid='93', sourcetypename='DATE')  NOT NULL SORTABLE,
+        job_id = 'JOB_ID' :'java.lang.String' (OPT) (sourcetyperadix='10', sourcetypesize='10', sourcetypeid='12', sourcetypename='VARCHAR2')  NOT NULL SORTABLE,
+        salary = 'SALARY' :'java.math.BigDecimal' (OPT) (sourcetypedecimals='2', sourcetyperadix='10', sourcetypesize='8', sourcetypeid='3', sourcetypename='NUMBER')  SORTABLE,
+        commission_pct = 'COMMISSION_PCT' :'java.math.BigDecimal' (OPT) (sourcetypedecimals='2', sourcetyperadix='10', sourcetypesize='2', sourcetypeid='3', sourcetypename='NUMBER')  SORTABLE,
+        manager_id = 'MANAGER_ID' :'java.lang.Integer' (OPT) (sourcetypedecimals='0', sourcetyperadix='10', sourcetypesize='6', sourcetypeid='3', sourcetypename='NUMBER')  SORTABLE,
+        department_id = 'DEPARTMENT_ID' :'java.lang.Integer' (OPT) (sourcetypedecimals='0', sourcetyperadix='10', sourcetypesize='4', sourcetypeid='3', sourcetypename='NUMBER')  SORTABLE
+    )
+    CONSTRAINT 'EMP_EMP_ID_PK' PRIMARY KEY ( 'EMPLOYEE_ID' )
+    CONSTRAINT 'EMP_DEPT_FK' FOREIGN KEY ( 'DEPARTMENT_ID' ) 
+    REFERENCES 'HUMAN_RESOURCES'.'DEPARTMENTS'( 'DEPARTMENT_ID' )  ON DELETE RESTRICT NOT DEFERRABLE 
+    CONSTRAINT 'EMP_MANAGER_FK' FOREIGN KEY ( 'MANAGER_ID' ) 
+    REFERENCES 'HUMAN_RESOURCES'.'EMPLOYEES'( 'EMPLOYEE_ID' )  ON DELETE RESTRICT NOT DEFERRABLE 
+    CONSTRAINT 'EMP_JOB_FK' FOREIGN KEY ( 'JOB_ID' ) 
+    REFERENCES 'HUMAN_RESOURCES'.'JOBS'( 'JOB_ID' )  ON DELETE RESTRICT NOT DEFERRABLE 
+    INDEX 'EMP_EMAIL_UK' CLUSTER UNIQUE ( 'EMAIL' )
+    INDEX 'EMP_EMP_ID_PK' CLUSTER UNIQUE PRIMARY ( 'EMPLOYEE_ID' );
+
+CREATE OR REPLACE TABLE bv_hr_employees I18N us_pst (
+        employee_id:int (notnull, sourcetypeid = '4', sourcetyperadix = '10', sourcetypedecimals = '0', sourcetypesize = '6'),
+        first_name:text (sourcetypeid = '12', sourcetyperadix = '10', sourcetypesize = '20'),
+        last_name:text (notnull, sourcetypeid = '12', sourcetyperadix = '10', sourcetypesize = '25'),
+        email:text (notnull, sourcetypeid = '12', sourcetyperadix = '10', sourcetypesize = '50'),
+        phone_number:text (sourcetypeid = '12', sourcetyperadix = '10', sourcetypesize = '20'),
+        hire_date:timestamp (notnull, sourcetypeid = '93', sourcetyperadix = '10', sourcetypesize = '7'),
+        job_id:text (notnull, sourcetypeid = '12', sourcetyperadix = '10', sourcetypesize = '10'),
+        salary:decimal (sourcetypeid = '3', sourcetyperadix = '10', sourcetypedecimals = '2', sourcetypesize = '8'),
+        commission_pct:decimal (sourcetypeid = '3', sourcetyperadix = '10', sourcetypedecimals = '2', sourcetypesize = '2'),
+        manager_id:int (sourcetypeid = '4', sourcetyperadix = '10', sourcetypedecimals = '0', sourcetypesize = '6'),
+        department_id:int (sourcetypeid = '4', sourcetyperadix = '10', sourcetypedecimals = '0', sourcetypesize = '4')
+    )
+    FOLDER = '/connectivity/base views'
+    CONSTRAINT 'EMP_EMP_ID_PK' PRIMARY KEY ( 'employee_id' )
+    CACHE OFF
+    TIMETOLIVEINCACHE DEFAULT
+    ADD SEARCHMETHOD bv_hr_employees(
+        I18N us_pst
+        CONSTRAINTS (
+             ADD employee_id (any) OPT ANY
+             ADD first_name (any) OPT ANY
+             ADD last_name (any) OPT ANY
+             ADD email (any) OPT ANY
+             ADD phone_number (any) OPT ANY
+             ADD hire_date (any) OPT ANY
+             ADD job_id (any) OPT ANY
+             ADD salary (any) OPT ANY
+             ADD commission_pct (any) OPT ANY
+             ADD manager_id (any) OPT ANY
+             ADD department_id (any) OPT ANY
+        )
+        OUTPUTLIST (commission_pct, department_id, email, employee_id, first_name, hire_date, job_id, last_name, manager_id, phone_number, salary
+        )
+        WRAPPER (jdbc bv_hr_employees)
+    );
+

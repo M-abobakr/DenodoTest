@@ -1,0 +1,29 @@
+﻿# REQUIRES-PROPERTIES-FILE - # Do not remove this comment!
+CREATE OR REPLACE WRAPPER JDBC bv_cc_problem
+    FOLDER = '/connectivity/base views'
+    DATASOURCENAME=ds_call_center
+    SCHEMANAME='${databases.training_db.folder.connectivity.folder.base views.views.jdbc.bv_cc_problem.SCHEMANAME}' 
+    RELATIONNAME='PROBLEM' 
+    OUTPUTSCHEMA (
+        problem_code = 'PROBLEM_CODE' :'java.math.BigDecimal' (OPT) (sourcetyperadix='10', sourcetypeid='3', sourcetypename='NUMBER')  SORTABLE,
+        problem_description = 'PROBLEM_DESCRIPTION' :'java.lang.String' (OPT) (sourcetyperadix='10', sourcetypesize='41', sourcetypeid='12', sourcetypename='VARCHAR2')  SORTABLE
+    );
+
+CREATE OR REPLACE TABLE bv_cc_problem I18N us_pst (
+        problem_code:decimal (sourcetypeid = '3', sourcetyperadix = '10'),
+        problem_description:text (sourcetypeid = '12', sourcetyperadix = '10', sourcetypesize = '41')
+    )
+    FOLDER = '/connectivity/base views'
+    CACHE OFF
+    TIMETOLIVEINCACHE DEFAULT
+    ADD SEARCHMETHOD bv_cc_problem(
+        I18N us_pst
+        CONSTRAINTS (
+             ADD problem_code (any) OPT ANY
+             ADD problem_description (any) OPT ANY
+        )
+        OUTPUTLIST (problem_code, problem_description
+        )
+        WRAPPER (jdbc bv_cc_problem)
+    );
+

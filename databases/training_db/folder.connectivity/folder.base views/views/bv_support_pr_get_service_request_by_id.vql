@@ -1,0 +1,76 @@
+﻿CREATE OR REPLACE WRAPPER JDBC pr_get_service_request_by_id
+    FOLDER = '/connectivity/base views'
+    DATASOURCENAME=ds_support_site
+    PACKAGENAME='PKG_SUPPORT_DB' 
+    PROCEDURENAME='PR_GET_SERVICE_REQUEST_BY_ID' 
+    OUTPUTSCHEMA (
+        i_case_id = 'I_CASE_ID' :'java.math.BigDecimal' (sourcetyperadix='10', sourcetypesize='22', sourcetypeid='3', sourcetypename='NUMBER')  NOT NULL NOT SORTABLE PARAMINDEX=1 PARAMTYPE=1,
+        o_sr_date = 'O_SR_DATE' :'java.time.LocalDateTime' (sourcetyperadix='10', sourcetypesize='6', sourcetypeid='93', sourcetypename='TIMESTAMP')  NOT NULL NOT SORTABLE PARAMINDEX=2 PARAMTYPE=4,
+        o_sr_description = 'O_SR_DESCRIPTION' :'java.lang.String' (sourcetyperadix='10', sourcetypeid='12', sourcetypename='VARCHAR2')  NOT NULL NOT SORTABLE PARAMINDEX=3 PARAMTYPE=4,
+        o_customer_ip = 'O_CUSTOMER_IP' :'java.lang.String' (sourcetyperadix='10', sourcetypeid='12', sourcetypename='VARCHAR2')  NOT NULL NOT SORTABLE PARAMINDEX=4 PARAMTYPE=4,
+        o_global_case_id = 'O_GLOBAL_CASE_ID' :'java.math.BigDecimal' (sourcetyperadix='10', sourcetypesize='22', sourcetypeid='3', sourcetypename='NUMBER')  NOT NULL NOT SORTABLE PARAMINDEX=5 PARAMTYPE=4,
+        o_case_creation_date = 'O_CASE_CREATION_DATE' :'java.time.LocalDateTime' (sourcetyperadix='10', sourcetypesize='6', sourcetypeid='93', sourcetypename='TIMESTAMP')  NOT NULL NOT SORTABLE PARAMINDEX=6 PARAMTYPE=4,
+        o_case_closed_date = 'O_CASE_CLOSED_DATE' :'java.time.LocalDateTime' (sourcetyperadix='10', sourcetypesize='6', sourcetypeid='93', sourcetypename='TIMESTAMP')  NOT NULL NOT SORTABLE PARAMINDEX=7 PARAMTYPE=4,
+        o_case_summary = 'O_CASE_SUMMARY' :'java.lang.String' (sourcetyperadix='10', sourcetypeid='12', sourcetypename='VARCHAR2')  NOT NULL NOT SORTABLE PARAMINDEX=8 PARAMTYPE=4,
+        o_status_code = 'O_STATUS_CODE' :'java.math.BigDecimal' (sourcetyperadix='10', sourcetypesize='22', sourcetypeid='3', sourcetypename='NUMBER')  NOT NULL NOT SORTABLE PARAMINDEX=9 PARAMTYPE=4,
+        o_status_description = 'O_STATUS_DESCRIPTION' :'java.lang.String' (sourcetyperadix='10', sourcetypeid='12', sourcetypename='VARCHAR2')  NOT NULL NOT SORTABLE PARAMINDEX=10 PARAMTYPE=4,
+        o_customer_code = 'O_CUSTOMER_CODE' :'java.lang.String' (sourcetyperadix='10', sourcetypeid='12', sourcetypename='VARCHAR2')  NOT NULL NOT SORTABLE PARAMINDEX=11 PARAMTYPE=4,
+        o_customer_name = 'O_CUSTOMER_NAME' :'java.lang.String' (sourcetyperadix='10', sourcetypeid='12', sourcetypename='VARCHAR2')  NOT NULL NOT SORTABLE PARAMINDEX=12 PARAMTYPE=4,
+        o_customer_address = 'O_CUSTOMER_ADDRESS' :'java.lang.String' (sourcetyperadix='10', sourcetypeid='12', sourcetypename='VARCHAR2')  NOT NULL NOT SORTABLE PARAMINDEX=13 PARAMTYPE=4,
+        o_customer_phone = 'O_CUSTOMER_PHONE' :'java.lang.String' (sourcetyperadix='10', sourcetypeid='12', sourcetypename='VARCHAR2')  NOT NULL NOT SORTABLE PARAMINDEX=14 PARAMTYPE=4,
+        o_customer_job_title = 'O_CUSTOMER_JOB_TITLE' :'java.lang.String' (sourcetyperadix='10', sourcetypeid='12', sourcetypename='VARCHAR2')  NOT NULL NOT SORTABLE PARAMINDEX=15 PARAMTYPE=4,
+        o_agent_id = 'O_AGENT_ID' :'java.math.BigDecimal' (sourcetyperadix='10', sourcetypesize='22', sourcetypeid='3', sourcetypename='NUMBER')  NOT NULL NOT SORTABLE PARAMINDEX=16 PARAMTYPE=4,
+        o_agent_code = 'O_AGENT_CODE' :'java.lang.String' (sourcetyperadix='10', sourcetypeid='12', sourcetypename='VARCHAR2')  NOT NULL NOT SORTABLE PARAMINDEX=17 PARAMTYPE=4,
+        o_agent_name = 'O_AGENT_NAME' :'java.lang.String' (sourcetyperadix='10', sourcetypeid='12', sourcetypename='VARCHAR2')  NOT NULL NOT SORTABLE PARAMINDEX=18 PARAMTYPE=4
+    );
+
+CREATE OR REPLACE TABLE bv_support_pr_get_service_request_by_id I18N us_pst (
+        i_case_id:decimal (extern, notnull, sourcetypeid = '3', sourcetyperadix = '10', sourcetypesize = '22'),
+        o_sr_date:timestamp (notnull, sourcetypeid = '93', sourcetyperadix = '10', sourcetypesize = '6'),
+        o_sr_description:text (notnull, sourcetypeid = '12', sourcetyperadix = '10'),
+        o_customer_ip:text (notnull, sourcetypeid = '12', sourcetyperadix = '10'),
+        o_global_case_id:decimal (notnull, sourcetypeid = '3', sourcetyperadix = '10', sourcetypesize = '22'),
+        o_case_creation_date:timestamp (notnull, sourcetypeid = '93', sourcetyperadix = '10', sourcetypesize = '6'),
+        o_case_closed_date:timestamp (notnull, sourcetypeid = '93', sourcetyperadix = '10', sourcetypesize = '6'),
+        o_case_summary:text (notnull, sourcetypeid = '12', sourcetyperadix = '10'),
+        o_status_code:decimal (notnull, sourcetypeid = '3', sourcetyperadix = '10', sourcetypesize = '22'),
+        o_status_description:text (notnull, sourcetypeid = '12', sourcetyperadix = '10'),
+        o_customer_code:text (notnull, sourcetypeid = '12', sourcetyperadix = '10'),
+        o_customer_name:text (notnull, sourcetypeid = '12', sourcetyperadix = '10'),
+        o_customer_address:text (notnull, sourcetypeid = '12', sourcetyperadix = '10'),
+        o_customer_phone:text (notnull, sourcetypeid = '12', sourcetyperadix = '10'),
+        o_customer_job_title:text (notnull, sourcetypeid = '12', sourcetyperadix = '10'),
+        o_agent_id:decimal (notnull, sourcetypeid = '3', sourcetyperadix = '10', sourcetypesize = '22'),
+        o_agent_code:text (notnull, sourcetypeid = '12', sourcetyperadix = '10'),
+        o_agent_name:text (notnull, sourcetypeid = '12', sourcetyperadix = '10')
+    )
+    FOLDER = '/connectivity/base views'
+    CACHE OFF
+    TIMETOLIVEINCACHE DEFAULT
+    ADD SEARCHMETHOD pr_get_service_request_by_id(
+        I18N us_pst
+        CONSTRAINTS (
+             ADD o_sr_date (any) OPT ANY
+             ADD o_sr_description (any) OPT ANY
+             ADD o_customer_ip (any) OPT ANY
+             ADD o_global_case_id (any) OPT ANY
+             ADD o_case_creation_date (any) OPT ANY
+             ADD o_case_closed_date (any) OPT ANY
+             ADD o_case_summary (any) OPT ANY
+             ADD o_status_code (any) OPT ANY
+             ADD o_status_description (any) OPT ANY
+             ADD o_customer_code (any) OPT ANY
+             ADD o_customer_name (any) OPT ANY
+             ADD o_customer_address (any) OPT ANY
+             ADD o_customer_phone (any) OPT ANY
+             ADD o_customer_job_title (any) OPT ANY
+             ADD o_agent_id (any) OPT ANY
+             ADD o_agent_code (any) OPT ANY
+             ADD o_agent_name (any) OPT ANY
+             ADD i_case_id (=) OBL ONE
+        )
+        OUTPUTLIST (o_agent_code, o_agent_id, o_agent_name, o_case_closed_date, o_case_creation_date, o_case_summary, o_customer_address, o_customer_code, o_customer_ip, o_customer_job_title, o_customer_name, o_customer_phone, o_global_case_id, o_sr_date, o_sr_description, o_status_code, o_status_description
+        )
+        WRAPPER (jdbc pr_get_service_request_by_id)
+    );
+

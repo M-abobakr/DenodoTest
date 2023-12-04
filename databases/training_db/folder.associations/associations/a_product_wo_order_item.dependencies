@@ -1,0 +1,8 @@
+﻿/databases/training_db/folder.associations/associations.vql
+/databases/training_db/folder.connectivity/connectivity.vql
+/databases/training_db/folder.connectivity/folder.base views/base views.vql
+/databases/training_db/folder.connectivity/folder.data sources/data sources.vql
+/databases/training_db/folder.connectivity/folder.data sources/datasources/ws/ds_product.vql
+/databases/training_db/folder.connectivity/folder.base views/views/bv_product.vql
+/databases/training_db/folder.connectivity/folder.data sources/datasources/jdbc/db_web_orders.vql
+/databases/training_db/folder.connectivity/folder.base views/views/bv_wo_order_item.vql

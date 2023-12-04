@@ -1,0 +1,41 @@
+﻿CREATE OR REPLACE WRAPPER DF ds_connections
+    FOLDER = '/connectivity/base views'
+    DATASOURCENAME=ds_connections
+    OUTPUTSCHEMA (
+        event_date = 'Column0',
+        source_ip = 'Column1',
+        device = 'Column2',
+        path = 'Column3',
+        http_code = 'Column4',
+        content_type = 'Column5',
+        size = 'Column6'
+    );
+
+CREATE OR REPLACE TABLE bv_conn_events I18N us_pst (
+        event_date:text,
+        source_ip:text,
+        device:text,
+        path:text,
+        http_code:text,
+        content_type:text,
+        size:text
+    )
+    FOLDER = '/connectivity/base views'
+    CACHE OFF
+    TIMETOLIVEINCACHE DEFAULT
+    ADD SEARCHMETHOD ds_connections(
+        I18N us_pst
+        CONSTRAINTS (
+             ADD event_date NOS ZERO ()
+             ADD source_ip NOS ZERO ()
+             ADD device NOS ZERO ()
+             ADD path NOS ZERO ()
+             ADD http_code NOS ZERO ()
+             ADD content_type NOS ZERO ()
+             ADD size NOS ZERO ()
+        )
+        OUTPUTLIST (content_type, device, event_date, http_code, path, size, source_ip
+        )
+        WRAPPER (df ds_connections)
+    );
+

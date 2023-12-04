@@ -1,0 +1,5 @@
+﻿CREATE OR REPLACE VIEW iv_employee_seniority FOLDER = '/connectivity/base views' AS SELECT bv_hr_employees.employee_id AS employee_id, bv_hr_employees.first_name AS first_name, bv_hr_employees.last_name AS last_name, bv_hr_employees.email AS email, bv_hr_employees.phone_number AS phone_number, bv_hr_employees.hire_date AS hire_date, bv_hr_employees.job_id AS job_id, bv_hr_employees.salary AS salary, bv_hr_employees.commission_pct AS commission_pct, bv_hr_employees.manager_id AS manager_id, bv_hr_employees.department_id AS department_id, round(cast(((current_date()-bv_hr_employees.hire_date)/365) AS DECIMAL), 1) AS seniority FROM bv_hr_employees;
+
+ALTER VIEW iv_employee_seniority
+ LAYOUT (bv_hr_employees = [20, 20, 200, 200]);
+

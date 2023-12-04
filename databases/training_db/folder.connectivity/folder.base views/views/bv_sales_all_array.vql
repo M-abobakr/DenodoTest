@@ -1,0 +1,63 @@
+﻿# REQUIRES-PROPERTIES-FILE - # Do not remove this comment!
+CREATE OR REPLACE WRAPPER JSON ds_sales
+    FOLDER = '/connectivity/base views'
+    DATASOURCENAME=ds_sales
+    TUPLEROOT '/JSONFile'
+    ROUTE HTTP 'http.CommonsHttpClientConnection,120000' GET '${databases.training_db.folder.connectivity.folder.base views.views.json.ds_sales.ROUTE.HTTP.URL}'
+    OUTPUTSCHEMA (jsonfile = 'JSONFile' : REGISTER OF (
+        salesdata = 'salesData' : ARRAY OF (
+            salesdata = 'salesData' : REGISTER OF (
+                productid = 'productId' : 'java.lang.String',
+                sales = 'sales' : ARRAY OF (
+                    sales = 'sales' : REGISTER OF (
+                        saleid = 'saleId' : 'java.lang.String',
+                        productid = 'productId' : 'java.lang.String',
+                        employeeid = 'employeeId' : 'java.lang.String',
+                        customerid = 'customerId' : 'java.lang.String',
+                        saledate = 'saleDate' : 'java.lang.String',
+                        bundleamount = 'bundleAmount' : 'java.lang.String',
+                        productsaleprice = 'productSalePrice' : 'java.lang.String',
+                        totalprice = 'totalPrice' : 'java.lang.String'
+                    )
+                )
+            )
+        )
+    )
+    );
+
+CREATE OR REPLACE TYPE ds_sales_salesdata_salesdata_sales_sales AS REGISTER OF (saleid:text, productid:text, employeeid:text, customerid:text, saledate:text, bundleamount:text, productsaleprice:text, totalprice:text);
+
+CREATE OR REPLACE TYPE ds_sales_salesdata_salesdata_sales AS ARRAY OF ds_sales_salesdata_salesdata_sales_sales;
+
+CREATE OR REPLACE TYPE ds_sales_salesdata_salesdata AS REGISTER OF (productid:text, sales:ds_sales_salesdata_salesdata_sales);
+
+CREATE OR REPLACE TYPE ds_sales_salesdata AS ARRAY OF ds_sales_salesdata_salesdata;
+
+CREATE OR REPLACE TABLE bv_sales_all_array I18N us_pst (
+        salesdata:ds_sales_salesdata
+    )
+    FOLDER = '/connectivity/base views'
+    CACHE OFF
+    TIMETOLIVEINCACHE DEFAULT
+    ADD SEARCHMETHOD ds_sales(
+        I18N us_pst
+        CONSTRAINTS (
+             ADD salesdata NOS ZERO ()
+             ADD salesdata NOS ZERO ()
+             ADD salesdata.productid NOS ZERO ()
+             ADD salesdata.sales NOS ZERO ()
+             ADD salesdata.sales NOS ZERO ()
+             ADD salesdata.sales.saleid NOS ZERO ()
+             ADD salesdata.sales.productid NOS ZERO ()
+             ADD salesdata.sales.employeeid NOS ZERO ()
+             ADD salesdata.sales.customerid NOS ZERO ()
+             ADD salesdata.sales.saledate NOS ZERO ()
+             ADD salesdata.sales.bundleamount NOS ZERO ()
+             ADD salesdata.sales.productsaleprice NOS ZERO ()
+             ADD salesdata.sales.totalprice NOS ZERO ()
+        )
+        OUTPUTLIST (salesdata
+        )
+        WRAPPER (json ds_sales)
+    );
+

@@ -1,0 +1,60 @@
+﻿# REQUIRES-PROPERTIES-FILE - # Do not remove this comment!
+CREATE OR REPLACE WRAPPER XML ds_sales_search
+    FOLDER = '/connectivity/base views'
+    DATASOURCENAME=ds_sales_search
+    TUPLEROOT '/salesDataList/salesData/sales'
+    ROUTE HTTP 'http.CommonsHttpClientConnection,120000' POST '${databases.training_db.folder.connectivity.folder.base views.views.xml.ds_sales_search.ROUTE.HTTP.URL}'
+    OUTPUTSCHEMA (salesdatalist = 'salesDataList' : REGISTER OF (
+        pid = 'pid' : 'java.lang.String' (OBL) (DEFAULTVALUE='2') EXTERN,
+        eid = 'eid' : 'java.lang.String' (OBL) (DEFAULTVALUE='48') EXTERN,
+        cid = 'cid' : 'java.lang.String' (OBL) (DEFAULTVALUE='00158000002dVSjAAM') EXTERN,
+        productid_0 = 'salesDataList.salesData.productId' : 'java.lang.Short',
+        bundleamount = 'salesDataList.salesData.sales.bundleAmount' : 'java.lang.Short',
+        customerid = 'salesDataList.salesData.sales.customerId' : 'java.lang.String',
+        employeeid = 'salesDataList.salesData.sales.employeeId' : 'java.lang.Short',
+        productid = 'salesDataList.salesData.sales.productId' : 'java.lang.Short',
+        productsaleprice = 'salesDataList.salesData.sales.productSalePrice' : 'java.lang.Float',
+        saledate = 'salesDataList.salesData.sales.saleDate' : 'java.time.LocalDateTime',
+        saleid = 'salesDataList.salesData.sales.saleId' : 'java.lang.Short',
+        totalprice = 'salesDataList.salesData.sales.totalPrice' : 'java.lang.Float'
+    )
+    );
+
+CREATE OR REPLACE TABLE bv_sales_search I18N us_pst (
+        pid:text (extern),
+        eid:text (extern),
+        cid:text (extern),
+        productid_0:int,
+        bundleamount:int,
+        customerid:text,
+        employeeid:int,
+        productid:int,
+        productsaleprice:float,
+        saledate:timestamp,
+        saleid:int,
+        totalprice:float
+    )
+    FOLDER = '/connectivity/base views'
+    CACHE OFF
+    TIMETOLIVEINCACHE DEFAULT
+    ADD SEARCHMETHOD ds_sales_search(
+        I18N us_pst
+        CONSTRAINTS (
+             ADD pid (=) OBL ONE
+             ADD eid (=) OBL ONE
+             ADD cid (=) OBL ONE
+             ADD productid_0 NOS ZERO ()
+             ADD bundleamount NOS ZERO ()
+             ADD customerid NOS ZERO ()
+             ADD employeeid NOS ZERO ()
+             ADD productid NOS ZERO ()
+             ADD productsaleprice NOS ZERO ()
+             ADD saledate NOS ZERO ()
+             ADD saleid NOS ZERO ()
+             ADD totalprice NOS ZERO ()
+        )
+        OUTPUTLIST (bundleamount, customerid, employeeid, productid, productid_0, productsaleprice, saledate, saleid, totalprice
+        )
+        WRAPPER (xml ds_sales_search)
+    );
+

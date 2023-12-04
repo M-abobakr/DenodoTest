@@ -1,0 +1,76 @@
+﻿# REQUIRES-PROPERTIES-FILE - # Do not remove this comment!
+CREATE OR REPLACE WRAPPER JSON youtube_test
+    FOLDER = '/connectivity/data sources'
+    DATASOURCENAME=youtube_test
+    TUPLEROOT '/JSONFile'
+    ROUTE HTTP 'http.CommonsHttpClientConnection,120000' GET '${databases.training_db.folder.connectivity.folder.data sources.views.json.youtube_test.ROUTE.HTTP.URL}'
+    OUTPUTSCHEMA (jsonfile = 'JSONFile' : REGISTER OF (
+        query = 'QUERY' : 'java.lang.String' (OBL) (DEFAULTVALUE='amr diab') EXTERN,
+        apikey = 'APIKEY' : 'java.lang.String' (OBL) (DEFAULTVALUE='AIzaSyADqTqi5oZax7gEv33w5HuUmvUNVqTwSTQ') EXTERN,
+        kind = 'kind' : 'java.lang.String',
+        etag = 'etag' : 'java.lang.String',
+        nextpagetoken = 'nextPageToken' : 'java.lang.String',
+        regioncode = 'regionCode' : 'java.lang.String',
+        pageinfo = 'pageInfo' : REGISTER OF (
+            totalresults = 'totalResults' : 'java.lang.Integer',
+            resultsperpage = 'resultsPerPage' : 'java.lang.Integer'
+        ),
+        items = 'items' : ARRAY OF (
+            items = 'items' : REGISTER OF (
+                kind = 'kind' : 'java.lang.String',
+                etag = 'etag' : 'java.lang.String',
+                id = 'id' : REGISTER OF (
+                    kind = 'kind' : 'java.lang.String',
+                    videoid = 'videoId' : 'java.lang.String'
+                )
+            )
+        )
+    )
+    );
+
+CREATE OR REPLACE TYPE youtube_test_pageinfo AS REGISTER OF (totalresults:int, resultsperpage:int);
+
+CREATE OR REPLACE TYPE youtube_test_items_items_id AS REGISTER OF (kind:text, videoid:text);
+
+CREATE OR REPLACE TYPE youtube_test_items_items AS REGISTER OF (kind:text, etag:text, id:youtube_test_items_items_id);
+
+CREATE OR REPLACE TYPE youtube_test_items AS ARRAY OF youtube_test_items_items;
+
+CREATE OR REPLACE TABLE youtube_test I18N us_pst (
+        query:text (extern),
+        apikey:text (extern),
+        kind:text,
+        etag:text,
+        nextpagetoken:text,
+        regioncode:text,
+        pageinfo:youtube_test_pageinfo,
+        items:youtube_test_items
+    )
+    FOLDER = '/connectivity/data sources'
+    CACHE OFF
+    TIMETOLIVEINCACHE DEFAULT
+    ADD SEARCHMETHOD youtube_test(
+        I18N us_pst
+        CONSTRAINTS (
+             ADD query (=) OBL ONE
+             ADD apikey (=) OBL ONE
+             ADD kind NOS ZERO ()
+             ADD etag NOS ZERO ()
+             ADD nextpagetoken NOS ZERO ()
+             ADD regioncode NOS ZERO ()
+             ADD pageinfo NOS ZERO ()
+             ADD pageinfo.totalresults NOS ZERO ()
+             ADD pageinfo.resultsperpage NOS ZERO ()
+             ADD items NOS ZERO ()
+             ADD items NOS ZERO ()
+             ADD items.kind NOS ZERO ()
+             ADD items.etag NOS ZERO ()
+             ADD items.id NOS ZERO ()
+             ADD items.id.kind NOS ZERO ()
+             ADD items.id.videoid NOS ZERO ()
+        )
+        OUTPUTLIST (etag, items, kind, nextpagetoken, pageinfo, regioncode
+        )
+        WRAPPER (json youtube_test)
+    );
+

@@ -1,0 +1,33 @@
+﻿# REQUIRES-PROPERTIES-FILE - # Do not remove this comment!
+CREATE OR REPLACE WRAPPER JDBC bv_cc_agent
+    FOLDER = '/connectivity/base views'
+    DATASOURCENAME=ds_call_center
+    SCHEMANAME='${databases.training_db.folder.connectivity.folder.base views.views.jdbc.bv_cc_agent.SCHEMANAME}' 
+    RELATIONNAME='AGENT' 
+    OUTPUTSCHEMA (
+        agent_id = 'AGENT_ID' :'java.math.BigDecimal' (OPT) (sourcetyperadix='10', sourcetypeid='3', sourcetypename='NUMBER')  NOT NULL SORTABLE,
+        agent_code = 'AGENT_CODE' :'java.lang.String' (OPT) (sourcetyperadix='10', sourcetypesize='13', sourcetypeid='12', sourcetypename='VARCHAR2')  SORTABLE,
+        agent_name = 'AGENT_NAME' :'java.lang.String' (OPT) (sourcetyperadix='10', sourcetypesize='14', sourcetypeid='12', sourcetypename='VARCHAR2')  SORTABLE
+    );
+
+CREATE OR REPLACE TABLE bv_cc_agent I18N us_pst (
+        agent_id:decimal (notnull, sourcetypeid = '3', sourcetyperadix = '10'),
+        agent_code:text (sourcetypeid = '12', sourcetyperadix = '10', sourcetypesize = '13'),
+        agent_name:text (sourcetypeid = '12', sourcetyperadix = '10', sourcetypesize = '14')
+    )
+    FOLDER = '/connectivity/base views'
+    DESCRIPTION = 'description for cc agent'
+    CACHE OFF
+    TIMETOLIVEINCACHE DEFAULT
+    ADD SEARCHMETHOD bv_cc_agent(
+        I18N us_pst
+        CONSTRAINTS (
+             ADD agent_id (any) OPT ANY
+             ADD agent_code (any) OPT ANY
+             ADD agent_name (any) OPT ANY
+        )
+        OUTPUTLIST (agent_code, agent_id, agent_name
+        )
+        WRAPPER (jdbc bv_cc_agent)
+    );
+

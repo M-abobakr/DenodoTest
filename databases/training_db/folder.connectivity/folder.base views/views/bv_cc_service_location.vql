@@ -1,0 +1,41 @@
+﻿# REQUIRES-PROPERTIES-FILE - # Do not remove this comment!
+CREATE OR REPLACE WRAPPER JDBC bv_cc_service_location
+    FOLDER = '/connectivity/base views'
+    DATASOURCENAME=ds_call_center
+    SCHEMANAME='${databases.training_db.folder.connectivity.folder.base views.views.jdbc.bv_cc_service_location.SCHEMANAME}' 
+    RELATIONNAME='SERVICE_LOCATION' 
+    OUTPUTSCHEMA (
+        id = 'ID' :'java.math.BigDecimal' (OPT) (sourcetyperadix='10', sourcetypeid='3', sourcetypename='NUMBER')  SORTABLE,
+        location_id = 'LOCATION_ID' :'java.math.BigDecimal' (OPT) (sourcetyperadix='10', sourcetypeid='3', sourcetypename='NUMBER')  SORTABLE,
+        customer_id = 'CUSTOMER_ID' :'java.math.BigDecimal' (OPT) (sourcetyperadix='10', sourcetypeid='3', sourcetypename='NUMBER')  SORTABLE,
+        business_name = 'BUSINESS_NAME' :'java.lang.String' (OPT) (sourcetyperadix='10', sourcetypesize='12', sourcetypeid='12', sourcetypename='VARCHAR2')  SORTABLE,
+        service_location = 'SERVICE_LOCATION' :'java.lang.String' (OPT) (sourcetyperadix='10', sourcetypesize='22', sourcetypeid='12', sourcetypename='VARCHAR2')  SORTABLE,
+        other_details = 'OTHER_DETAILS' :'java.lang.String' (OPT) (sourcetyperadix='10', sourcetypesize='50', sourcetypeid='12', sourcetypename='VARCHAR2')  SORTABLE
+    );
+
+CREATE OR REPLACE TABLE bv_cc_service_location I18N us_pst (
+        id:decimal (sourcetypeid = '3', sourcetyperadix = '10'),
+        location_id:decimal (sourcetypeid = '3', sourcetyperadix = '10'),
+        customer_id:decimal (sourcetypeid = '3', sourcetyperadix = '10'),
+        business_name:text (sourcetypeid = '12', sourcetyperadix = '10', sourcetypesize = '12'),
+        service_location:text (sourcetypeid = '12', sourcetyperadix = '10', sourcetypesize = '22'),
+        other_details:text (sourcetypeid = '12', sourcetyperadix = '10', sourcetypesize = '50')
+    )
+    FOLDER = '/connectivity/base views'
+    CACHE OFF
+    TIMETOLIVEINCACHE DEFAULT
+    ADD SEARCHMETHOD bv_cc_service_location(
+        I18N us_pst
+        CONSTRAINTS (
+             ADD id (any) OPT ANY
+             ADD location_id (any) OPT ANY
+             ADD customer_id (any) OPT ANY
+             ADD business_name (any) OPT ANY
+             ADD service_location (any) OPT ANY
+             ADD other_details (any) OPT ANY
+        )
+        OUTPUTLIST (business_name, customer_id, id, location_id, other_details, service_location
+        )
+        WRAPPER (jdbc bv_cc_service_location)
+    );
+

@@ -1,0 +1,37 @@
+﻿# REQUIRES-PROPERTIES-FILE - # Do not remove this comment!
+CREATE OR REPLACE WRAPPER JDBC bv_hr_countries
+    FOLDER = '/connectivity/base views'
+    DATASOURCENAME=ds_human_resources
+    SCHEMANAME='${databases.training_db.folder.connectivity.folder.base views.views.jdbc.bv_hr_countries.SCHEMANAME}' 
+    RELATIONNAME='COUNTRIES' 
+    OUTPUTSCHEMA (
+        country_id = 'COUNTRY_ID' :'java.lang.String' (OPT) (sourcetyperadix='10', sourcetypesize='2', sourcetypeid='1', sourcetypename='CHAR')  NOT NULL SORTABLE,
+        country_name = 'COUNTRY_NAME' :'java.lang.String' (OPT) (sourcetyperadix='10', sourcetypesize='40', sourcetypeid='12', sourcetypename='VARCHAR2')  SORTABLE,
+        region_id = 'REGION_ID' :'java.math.BigDecimal' (OPT) (sourcetyperadix='10', sourcetypeid='3', sourcetypename='NUMBER')  SORTABLE
+    )
+    CONSTRAINT 'COUNTRY_C_ID_PK' PRIMARY KEY ( 'COUNTRY_ID' )
+    CONSTRAINT 'COUNTR_REG_FK' FOREIGN KEY ( 'REGION_ID' ) 
+    REFERENCES 'HUMAN_RESOURCES'.'REGIONS'( 'REGION_ID' )  ON DELETE RESTRICT NOT DEFERRABLE 
+    INDEX 'COUNTRY_C_ID_PK' CLUSTER UNIQUE PRIMARY ( 'COUNTRY_ID' );
+
+CREATE OR REPLACE TABLE bv_hr_countries I18N us_pst (
+        country_id:text (notnull, sourcetypeid = '1', sourcetyperadix = '10', sourcetypesize = '2'),
+        country_name:text (sourcetypeid = '12', sourcetyperadix = '10', sourcetypesize = '40'),
+        region_id:decimal (sourcetypeid = '3', sourcetyperadix = '10')
+    )
+    FOLDER = '/connectivity/base views'
+    CONSTRAINT 'COUNTRY_C_ID_PK' PRIMARY KEY ( 'country_id' )
+    CACHE OFF
+    TIMETOLIVEINCACHE DEFAULT
+    ADD SEARCHMETHOD bv_hr_countries(
+        I18N us_pst
+        CONSTRAINTS (
+             ADD country_id (any) OPT ANY
+             ADD country_name (any) OPT ANY
+             ADD region_id (any) OPT ANY
+        )
+        OUTPUTLIST (country_id, country_name, region_id
+        )
+        WRAPPER (jdbc bv_hr_countries)
+    );
+

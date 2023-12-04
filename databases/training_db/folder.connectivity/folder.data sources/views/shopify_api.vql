@@ -1,0 +1,241 @@
+﻿# REQUIRES-PROPERTIES-FILE - # Do not remove this comment!
+CREATE OR REPLACE WRAPPER JSON shopify_api
+    FOLDER = '/connectivity/data sources'
+    DATASOURCENAME=shopify_api
+    TUPLEROOT '/JSONFile/products'
+    ROUTE HTTP 'http.CommonsHttpClientConnection,120000' GET '${databases.training_db.folder.connectivity.folder.data sources.views.json.shopify_api.ROUTE.HTTP.URL}'
+    OUTPUTSCHEMA (jsonfile = 'JSONFile' : REGISTER OF (
+        id = 'JSONFile.products.id' : 'java.lang.Long',
+        title = 'JSONFile.products.title' : 'java.lang.String',
+        body_html = 'JSONFile.products.body_html' : 'java.lang.String',
+        vendor = 'JSONFile.products.vendor' : 'java.lang.String',
+        product_type = 'JSONFile.products.product_type' : 'java.lang.String',
+        created_at = 'JSONFile.products.created_at' : 'java.lang.String',
+        handle = 'JSONFile.products.handle' : 'java.lang.String',
+        updated_at = 'JSONFile.products.updated_at' : 'java.lang.String',
+        published_at = 'JSONFile.products.published_at' : 'java.lang.String',
+        template_suffix = 'JSONFile.products.template_suffix' : 'java.lang.String',
+        published_scope = 'JSONFile.products.published_scope' : 'java.lang.String',
+        status = 'JSONFile.products.status' : 'java.lang.String',
+        admin_graphql_api_id = 'JSONFile.products.admin_graphql_api_id' : 'java.lang.String',
+        variants = 'JSONFile.products.variants' : ARRAY OF (
+            variants = 'variants' : REGISTER OF (
+                id = 'id' : 'java.lang.Long',
+                product_id = 'product_id' : 'java.lang.Long',
+                title = 'title' : 'java.lang.String',
+                price = 'price' : 'java.lang.String',
+                position = 'position' : 'java.lang.Integer',
+                inventory_policy = 'inventory_policy' : 'java.lang.String',
+                compare_at_price = 'compare_at_price' : 'java.lang.String',
+                fulfillment_service = 'fulfillment_service' : 'java.lang.String',
+                option1 = 'option1' : 'java.lang.String',
+                option2 = 'option2' : 'java.lang.String',
+                option3 = 'option3' : 'java.lang.String',
+                created_at = 'created_at' : 'java.lang.String',
+                updated_at = 'updated_at' : 'java.lang.String',
+                taxable = 'taxable' : 'java.lang.String',
+                barcode = 'barcode' : 'java.lang.String',
+                grams = 'grams' : 'java.lang.Integer',
+                weight = 'weight' : 'java.lang.Double',
+                weight_unit = 'weight_unit' : 'java.lang.String',
+                inventory_item_id = 'inventory_item_id' : 'java.lang.Long',
+                inventory_quantity = 'inventory_quantity' : 'java.lang.Integer',
+                old_inventory_quantity = 'old_inventory_quantity' : 'java.lang.Integer',
+                requires_shipping = 'requires_shipping' : 'java.lang.String',
+                admin_graphql_api_id = 'admin_graphql_api_id' : 'java.lang.String',
+                inventory_management = 'inventory_management' : 'java.lang.String',
+                image_id = 'image_id' : 'java.lang.Long',
+                sku = 'sku' : 'java.lang.String'
+            )
+        ),
+        options = 'JSONFile.products.options' : ARRAY OF (
+            options = 'options' : REGISTER OF (
+                id = 'id' : 'java.lang.Long',
+                product_id = 'product_id' : 'java.lang.Long',
+                name = 'name' : 'java.lang.String',
+                position = 'position' : 'java.lang.Integer',
+                values = 'values' : ARRAY OF (
+                    values = 'values' : REGISTER OF (
+                        field_0 = 'field_0' : 'java.lang.String'
+                    )
+                )
+            )
+        ),
+        images = 'JSONFile.products.images' : ARRAY OF (
+            images = 'images' : REGISTER OF (
+                id = 'id' : 'java.lang.Long',
+                alt = 'alt' : 'java.lang.String',
+                position = 'position' : 'java.lang.Integer',
+                product_id = 'product_id' : 'java.lang.Long',
+                created_at = 'created_at' : 'java.lang.String',
+                updated_at = 'updated_at' : 'java.lang.String',
+                admin_graphql_api_id = 'admin_graphql_api_id' : 'java.lang.String',
+                width = 'width' : 'java.lang.Integer',
+                height = 'height' : 'java.lang.Integer',
+                src = 'src' : 'java.lang.String',
+                variant_ids = 'variant_ids' : ARRAY OF (
+                    variant_ids = 'variant_ids' : REGISTER OF (
+                        field_0 = 'field_0' : 'java.lang.Long'
+                    )
+                )
+            )
+        ),
+        image = 'JSONFile.products.image' : REGISTER OF (
+            id = 'id' : 'java.lang.Long',
+            alt = 'alt' : 'java.lang.String',
+            position = 'position' : 'java.lang.Integer',
+            product_id = 'product_id' : 'java.lang.Long',
+            created_at = 'created_at' : 'java.lang.String',
+            updated_at = 'updated_at' : 'java.lang.String',
+            admin_graphql_api_id = 'admin_graphql_api_id' : 'java.lang.String',
+            width = 'width' : 'java.lang.Integer',
+            height = 'height' : 'java.lang.Integer',
+            src = 'src' : 'java.lang.String',
+            variant_ids = 'variant_ids' : ARRAY OF (
+                variant_ids = 'variant_ids' : REGISTER OF (
+                    field_0 = 'field_0' : 'java.lang.Long'
+                )
+            )
+        ),
+        tags = 'JSONFile.products.tags' : 'java.lang.String'
+    )
+    );
+
+CREATE OR REPLACE TYPE shopify_api_variants_variants AS REGISTER OF (id:long, product_id:long, title:text, price:text, position:int, inventory_policy:text, compare_at_price:text, fulfillment_service:text, option1:text, option2:text, option3:text, created_at:text, updated_at:text, taxable:text, barcode:text, grams:int, weight:double, weight_unit:text, inventory_item_id:long, inventory_quantity:int, old_inventory_quantity:int, requires_shipping:text, admin_graphql_api_id:text, inventory_management:text, image_id:long, sku:text);
+
+CREATE OR REPLACE TYPE shopify_api_variants AS ARRAY OF shopify_api_variants_variants;
+
+CREATE OR REPLACE TYPE shopify_api_options_options_values_values AS REGISTER OF (field_0:text);
+
+CREATE OR REPLACE TYPE shopify_api_options_options_values AS ARRAY OF shopify_api_options_options_values_values;
+
+CREATE OR REPLACE TYPE shopify_api_options_options AS REGISTER OF (id:long, product_id:long, name:text, position:int, values:shopify_api_options_options_values);
+
+CREATE OR REPLACE TYPE shopify_api_options AS ARRAY OF shopify_api_options_options;
+
+CREATE OR REPLACE TYPE shopify_api_images_images_variant_ids_variant_ids AS REGISTER OF (field_0:long);
+
+CREATE OR REPLACE TYPE shopify_api_images_images_variant_ids AS ARRAY OF shopify_api_images_images_variant_ids_variant_ids;
+
+CREATE OR REPLACE TYPE shopify_api_images_images AS REGISTER OF (id:long, alt:text, position:int, product_id:long, created_at:text, updated_at:text, admin_graphql_api_id:text, width:int, height:int, src:text, variant_ids:shopify_api_images_images_variant_ids);
+
+CREATE OR REPLACE TYPE shopify_api_images AS ARRAY OF shopify_api_images_images;
+
+CREATE OR REPLACE TYPE shopify_api_image_variant_ids_variant_ids AS REGISTER OF (field_0:long);
+
+CREATE OR REPLACE TYPE shopify_api_image_variant_ids AS ARRAY OF shopify_api_image_variant_ids_variant_ids;
+
+CREATE OR REPLACE TYPE shopify_api_image AS REGISTER OF (id:long, alt:text, position:int, product_id:long, created_at:text, updated_at:text, admin_graphql_api_id:text, width:int, height:int, src:text, variant_ids:shopify_api_image_variant_ids);
+
+CREATE OR REPLACE TABLE shopify_api I18N us_pst (
+        id:long,
+        title:text,
+        body_html:text,
+        vendor:text,
+        product_type:text,
+        created_at:text,
+        handle:text,
+        updated_at:text,
+        published_at:text,
+        template_suffix:text,
+        published_scope:text,
+        status:text,
+        admin_graphql_api_id:text,
+        variants:shopify_api_variants,
+        options:shopify_api_options,
+        images:shopify_api_images,
+        image:shopify_api_image,
+        tags:text
+    )
+    FOLDER = '/connectivity/data sources'
+    CACHE OFF
+    TIMETOLIVEINCACHE DEFAULT
+    ADD SEARCHMETHOD shopify_api(
+        I18N us_pst
+        CONSTRAINTS (
+             ADD id NOS ZERO ()
+             ADD title NOS ZERO ()
+             ADD body_html NOS ZERO ()
+             ADD vendor NOS ZERO ()
+             ADD product_type NOS ZERO ()
+             ADD created_at NOS ZERO ()
+             ADD handle NOS ZERO ()
+             ADD updated_at NOS ZERO ()
+             ADD published_at NOS ZERO ()
+             ADD template_suffix NOS ZERO ()
+             ADD published_scope NOS ZERO ()
+             ADD status NOS ZERO ()
+             ADD admin_graphql_api_id NOS ZERO ()
+             ADD variants NOS ZERO ()
+             ADD variants NOS ZERO ()
+             ADD variants.id NOS ZERO ()
+             ADD variants.product_id NOS ZERO ()
+             ADD variants.title NOS ZERO ()
+             ADD variants.price NOS ZERO ()
+             ADD variants.position NOS ZERO ()
+             ADD variants.inventory_policy NOS ZERO ()
+             ADD variants.compare_at_price NOS ZERO ()
+             ADD variants.fulfillment_service NOS ZERO ()
+             ADD variants.option1 NOS ZERO ()
+             ADD variants.option2 NOS ZERO ()
+             ADD variants.option3 NOS ZERO ()
+             ADD variants.created_at NOS ZERO ()
+             ADD variants.updated_at NOS ZERO ()
+             ADD variants.taxable NOS ZERO ()
+             ADD variants.barcode NOS ZERO ()
+             ADD variants.grams NOS ZERO ()
+             ADD variants.weight NOS ZERO ()
+             ADD variants.weight_unit NOS ZERO ()
+             ADD variants.inventory_item_id NOS ZERO ()
+             ADD variants.inventory_quantity NOS ZERO ()
+             ADD variants.old_inventory_quantity NOS ZERO ()
+             ADD variants.requires_shipping NOS ZERO ()
+             ADD variants.admin_graphql_api_id NOS ZERO ()
+             ADD variants.inventory_management NOS ZERO ()
+             ADD variants.image_id NOS ZERO ()
+             ADD variants.sku NOS ZERO ()
+             ADD options NOS ZERO ()
+             ADD options NOS ZERO ()
+             ADD options.id NOS ZERO ()
+             ADD options.product_id NOS ZERO ()
+             ADD options.name NOS ZERO ()
+             ADD options.position NOS ZERO ()
+             ADD options.values NOS ZERO ()
+             ADD options.values NOS ZERO ()
+             ADD options.values.field_0 NOS ZERO ()
+             ADD images NOS ZERO ()
+             ADD images NOS ZERO ()
+             ADD images.id NOS ZERO ()
+             ADD images.alt NOS ZERO ()
+             ADD images.position NOS ZERO ()
+             ADD images.product_id NOS ZERO ()
+             ADD images.created_at NOS ZERO ()
+             ADD images.updated_at NOS ZERO ()
+             ADD images.admin_graphql_api_id NOS ZERO ()
+             ADD images.width NOS ZERO ()
+             ADD images.height NOS ZERO ()
+             ADD images.src NOS ZERO ()
+             ADD images.variant_ids NOS ZERO ()
+             ADD images.variant_ids NOS ZERO ()
+             ADD images.variant_ids.field_0 NOS ZERO ()
+             ADD image NOS ZERO ()
+             ADD image.id NOS ZERO ()
+             ADD image.alt NOS ZERO ()
+             ADD image.position NOS ZERO ()
+             ADD image.product_id NOS ZERO ()
+             ADD image.created_at NOS ZERO ()
+             ADD image.updated_at NOS ZERO ()
+             ADD image.admin_graphql_api_id NOS ZERO ()
+             ADD image.width NOS ZERO ()
+             ADD image.height NOS ZERO ()
+             ADD image.src NOS ZERO ()
+             ADD image.variant_ids NOS ZERO ()
+             ADD image.variant_ids NOS ZERO ()
+             ADD image.variant_ids.field_0 NOS ZERO ()
+             ADD tags NOS ZERO ()
+        )
+        OUTPUTLIST (admin_graphql_api_id, body_html, created_at, handle, id, image, images, options, product_type, published_at, published_scope, status, tags, template_suffix, title, updated_at, variants, vendor
+        )
+        WRAPPER (json shopify_api)
+    );
+

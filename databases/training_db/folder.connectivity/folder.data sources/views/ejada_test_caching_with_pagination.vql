@@ -1,0 +1,77 @@
+﻿# REQUIRES-PROPERTIES-FILE - # Do not remove this comment!
+CREATE OR REPLACE WRAPPER JSON ejada_test_caching_with_pagination
+    FOLDER = '/connectivity/data sources'
+    DATASOURCENAME=ejada_test_caching_with_pagination
+    TUPLEROOT '/JSONFile'
+    ROUTE HTTP 'http.CommonsHttpClientConnection,120000' GET '${databases.training_db.folder.connectivity.folder.data sources.views.json.ejada_test_caching_with_pagination.ROUTE.HTTP.URL}'
+    OUTPUTSCHEMA (jsonfile = 'JSONFile' : REGISTER OF (
+        products = 'products' : ARRAY OF (
+            products = 'products' : REGISTER OF (
+                id = 'id' : 'java.lang.Integer',
+                title = 'title' : 'java.lang.String',
+                description = 'description' : 'java.lang.String',
+                price = 'price' : 'java.lang.Integer',
+                discountpercentage = 'discountPercentage' : 'java.lang.Double',
+                rating = 'rating' : 'java.lang.Double',
+                stock = 'stock' : 'java.lang.Integer',
+                brand = 'brand' : 'java.lang.String',
+                category = 'category' : 'java.lang.String',
+                thumbnail = 'thumbnail' : 'java.lang.String',
+                images = 'images' : ARRAY OF (
+                    images = 'images' : REGISTER OF (
+                        field_0 = 'field_0' : 'java.lang.String'
+                    )
+                )
+            )
+        ),
+        total = 'total' : 'java.lang.Integer',
+        skip = 'skip' : 'java.lang.Integer' (OBL) (DEFAULTVALUE='30'),
+        limit_0 = 'limit' : 'java.lang.Integer' (OBL) (DEFAULTVALUE='10')
+    )
+    );
+
+CREATE OR REPLACE TYPE ejada_test_caching_with_pagination_products_products_images_images AS REGISTER OF (field_0:text);
+
+CREATE OR REPLACE TYPE ejada_test_caching_with_pagination_products_products_images AS ARRAY OF ejada_test_caching_with_pagination_products_products_images_images;
+
+CREATE OR REPLACE TYPE ejada_test_caching_with_pagination_products_products AS REGISTER OF (id:int, title:text, description:text, price:int, discountpercentage:double, rating:double, stock:int, brand:text, category:text, thumbnail:text, images:ejada_test_caching_with_pagination_products_products_images);
+
+CREATE OR REPLACE TYPE ejada_test_caching_with_pagination_products AS ARRAY OF ejada_test_caching_with_pagination_products_products;
+
+CREATE OR REPLACE TABLE ejada_test_caching_with_pagination I18N us_pst (
+        products:ejada_test_caching_with_pagination_products,
+        total:int,
+        skip:int,
+        limit_0:int
+    )
+    FOLDER = '/connectivity/data sources'
+    CACHE OFF
+    BATCHSIZEINCACHE DEFAULT
+    TIMETOLIVEINCACHE DEFAULT
+    ADD SEARCHMETHOD ejada_test_caching_with_pagination(
+        I18N us_pst
+        CONSTRAINTS (
+             ADD products NOS ZERO ()
+             ADD products NOS ZERO ()
+             ADD products.id NOS ZERO ()
+             ADD products.title NOS ZERO ()
+             ADD products.description NOS ZERO ()
+             ADD products.price NOS ZERO ()
+             ADD products.discountpercentage NOS ZERO ()
+             ADD products.rating NOS ZERO ()
+             ADD products.stock NOS ZERO ()
+             ADD products.brand NOS ZERO ()
+             ADD products.category NOS ZERO ()
+             ADD products.thumbnail NOS ZERO ()
+             ADD products.images NOS ZERO ()
+             ADD products.images NOS ZERO ()
+             ADD products.images.field_0 NOS ZERO ()
+             ADD total NOS ZERO ()
+             ADD skip (=) OBL ONE
+             ADD limit_0 (=) OBL ONE
+        )
+        OUTPUTLIST (limit_0, products, skip, total
+        )
+        WRAPPER (json ejada_test_caching_with_pagination)
+    );
+

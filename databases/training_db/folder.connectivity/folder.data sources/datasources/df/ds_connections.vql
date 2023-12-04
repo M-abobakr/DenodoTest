@@ -1,0 +1,8 @@
+﻿# REQUIRES-PROPERTIES-FILE - # Do not remove this comment!
+CREATE OR REPLACE DATASOURCE DF ds_connections
+    FOLDER = '/connectivity/data sources'
+    ROUTE LOCAL 'LocalConnection' '${databases.training_db.folder.connectivity.folder.data sources.datasources.df.ds_connections.ROUTE.LOCAL.PATH}' FILENAMEPATTERN = '(.*)\.log.txt'
+    TUPLEPATTERN = '\[(.+)Z\]\t([0-9\.]+)\t([a-zA-Z ]+)\t([^,]+),([0-2]+) \(Apache-Coyote/1.1: (.+)\) size:(.+)'
+    ENDOFLINEDELIMITER = '\n'
+    HEADER = FALSE;
+

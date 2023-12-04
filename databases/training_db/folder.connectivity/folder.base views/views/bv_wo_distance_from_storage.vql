@@ -1,0 +1,39 @@
+﻿CREATE OR REPLACE WRAPPER JDBC bv_wo_distance_from_storage
+    FOLDER = '/connectivity/base views'
+    DATASOURCENAME=db_web_orders
+    SQLSENTENCE='select latitude as lat_storage, longitude as lon_storage, id as storage_id,  (NVL(3963.0,0) * ACOS((sin(NVL(@lat_input,0) / 57.29577951) * SIN(NVL(latitude,0) / 57.29577951)) + (COS(NVL(@lat_input,0) / 57.29577951) * COS(NVL(latitude,0) / 57.29577951) * COS(NVL(longitude,0) / 57.29577951 - NVL(@lon_input,0)/ 57.29577951)))) as distance from storages order by distance'   
+    OUTPUTSCHEMA (
+        lat_storage = 'LAT_STORAGE' :'java.math.BigDecimal' (sourcetypedecimals='10', sourcetypesize='20', sourcetypeid='2', sourcetypename='NUMBER')  SORTABLE NOT UPDATEABLE,
+        lon_storage = 'LON_STORAGE' :'java.math.BigDecimal' (sourcetypedecimals='10', sourcetypesize='20', sourcetypeid='2', sourcetypename='NUMBER')  SORTABLE NOT UPDATEABLE,
+        storage_id = 'STORAGE_ID' :'java.math.BigDecimal' (sourcetypeid='2', sourcetypename='NUMBER')  NOT NULL SORTABLE NOT UPDATEABLE,
+        distance = 'DISTANCE' :'java.math.BigDecimal' (sourcetypedecimals='0', sourcetypeid='2', sourcetypename='NUMBER')  SORTABLE NOT UPDATEABLE,
+        lat_input = 'LAT_INPUT' :'java.lang.String' (OBL) (DEFAULTVALUE='0')  EXTERN SORTABLE,
+        lon_input = 'LON_INPUT' :'java.lang.String' (OBL) (DEFAULTVALUE='0')  EXTERN SORTABLE
+    );
+
+CREATE OR REPLACE TABLE bv_wo_distance_from_storage I18N us_pst (
+        lat_storage:decimal (sourcetypeid = '3', sourcetypedecimals = '10', sourcetypesize = '20'),
+        lon_storage:decimal (sourcetypeid = '3', sourcetypedecimals = '10', sourcetypesize = '20'),
+        storage_id:decimal (notnull, sourcetypeid = '3'),
+        distance:decimal (sourcetypeid = '3', sourcetypedecimals = '0'),
+        lat_input:text (extern),
+        lon_input:text (extern)
+    )
+    FOLDER = '/connectivity/base views'
+    CACHE OFF
+    TIMETOLIVEINCACHE DEFAULT
+    ADD SEARCHMETHOD bv_wo_distance_from_storage(
+        I18N us_pst
+        CONSTRAINTS (
+             ADD lat_storage NOS ZERO ()
+             ADD lon_storage NOS ZERO ()
+             ADD storage_id NOS ZERO ()
+             ADD distance NOS ZERO ()
+             ADD lat_input (=) OBL ONE
+             ADD lon_input (=) OBL ONE
+        )
+        OUTPUTLIST (distance, lat_storage, lon_storage, storage_id
+        )
+        WRAPPER (jdbc bv_wo_distance_from_storage)
+    );
+

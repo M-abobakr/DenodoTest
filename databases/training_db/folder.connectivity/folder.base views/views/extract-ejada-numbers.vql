@@ -1,0 +1,16 @@
+﻿CREATE OR REPLACE TABLE "extract-ejada-numbers" I18N us_pst (
+        text:text (sourcetypeid = '12')
+    )
+    FOLDER = '/connectivity/base views'
+    CACHE OFF
+    TIMETOLIVEINCACHE DEFAULT
+    ADD SEARCHMETHOD "extract-ejada-numbers"(
+        I18N us_pst
+        CONSTRAINTS (
+             ADD text (any) OPT ANY
+        )
+        OUTPUTLIST (text
+        )
+        WRAPPER (custom "extract-ejada-numbers")
+    );
+

@@ -1,0 +1,20 @@
+﻿# REQUIRES-PROPERTIES-FILE - # Do not remove this comment!
+CREATE OR REPLACE DATASOURCE CUSTOM "extract-ejada-numbers"
+    FOLDER = '/connectivity/data sources'
+    CLASSNAME='com.denodo.vdb.contrib.wrapper.xls.ExcelWrapper';
+
+CREATE OR REPLACE WRAPPER CUSTOM "extract-ejada-numbers"
+    FOLDER = '/connectivity/base views'
+    DATASOURCENAME="extract-ejada-numbers"
+    PARAMETERS (
+      'Type of file' = 'Excel 2007 or later (*.xlsx)',
+      'File location' = ROUTE LOCAL 'LocalConnection' '${databases.training_db.folder.connectivity.folder.base views.views.custom.extract-ejada-numbers.File location.ROUTE.LOCAL.PATH}',
+      'Extract data from all sheets' = true,
+      'Extract sheet name as a new column' = false,
+      'Has headers' = true,
+      'Stream tuples' = true
+    )
+    OUTPUTSCHEMA (
+        text = 'text' : 'java.lang.String' (OPT) (sourcetypeid='12')  SORTABLE
+    );
+

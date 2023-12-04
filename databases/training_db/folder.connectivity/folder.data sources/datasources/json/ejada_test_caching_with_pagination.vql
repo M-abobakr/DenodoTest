@@ -1,0 +1,11 @@
+﻿# REQUIRES-PROPERTIES-FILE - # Do not remove this comment!
+CREATE OR REPLACE DATASOURCE JSON ejada_test_caching_with_pagination
+    FOLDER = '/connectivity/data sources'
+    ROUTE HTTP 'http.CommonsHttpClientConnection,120000' GET '${databases.training_db.folder.connectivity.folder.data sources.datasources.json.ejada_test_caching_with_pagination.ROUTE.HTTP.URL}'
+    HEADERS (
+        'Accept'='application/json', 
+        'Content-type'='application/json'
+    )
+    AUTHENTICATION OFF
+    PROXY OFF;
+

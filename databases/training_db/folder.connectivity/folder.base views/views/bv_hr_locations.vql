@@ -1,0 +1,46 @@
+﻿# REQUIRES-PROPERTIES-FILE - # Do not remove this comment!
+CREATE OR REPLACE WRAPPER JDBC bv_hr_locations
+    FOLDER = '/connectivity/base views'
+    DATASOURCENAME=ds_human_resources
+    SCHEMANAME='${databases.training_db.folder.connectivity.folder.base views.views.jdbc.bv_hr_locations.SCHEMANAME}' 
+    RELATIONNAME='LOCATIONS' 
+    OUTPUTSCHEMA (
+        location_id = 'LOCATION_ID' :'java.lang.Integer' (OPT) (sourcetypedecimals='0', sourcetyperadix='10', sourcetypesize='4', sourcetypeid='3', sourcetypename='NUMBER')  NOT NULL SORTABLE,
+        street_address = 'STREET_ADDRESS' :'java.lang.String' (OPT) (sourcetyperadix='10', sourcetypesize='40', sourcetypeid='12', sourcetypename='VARCHAR2')  SORTABLE,
+        postal_code = 'POSTAL_CODE' :'java.lang.String' (OPT) (sourcetyperadix='10', sourcetypesize='12', sourcetypeid='12', sourcetypename='VARCHAR2')  SORTABLE,
+        city = 'CITY' :'java.lang.String' (OPT) (sourcetyperadix='10', sourcetypesize='30', sourcetypeid='12', sourcetypename='VARCHAR2')  NOT NULL SORTABLE,
+        state_province = 'STATE_PROVINCE' :'java.lang.String' (OPT) (sourcetyperadix='10', sourcetypesize='25', sourcetypeid='12', sourcetypename='VARCHAR2')  SORTABLE,
+        country_id = 'COUNTRY_ID' :'java.lang.String' (OPT) (sourcetyperadix='10', sourcetypesize='2', sourcetypeid='1', sourcetypename='CHAR')  SORTABLE
+    )
+    CONSTRAINT 'LOC_ID_PK' PRIMARY KEY ( 'LOCATION_ID' )
+    CONSTRAINT 'LOC_C_ID_FK' FOREIGN KEY ( 'COUNTRY_ID' ) 
+    REFERENCES 'HUMAN_RESOURCES'.'COUNTRIES'( 'COUNTRY_ID' )  ON DELETE RESTRICT NOT DEFERRABLE 
+    INDEX 'LOC_ID_PK' CLUSTER UNIQUE PRIMARY ( 'LOCATION_ID' );
+
+CREATE OR REPLACE TABLE bv_hr_locations I18N us_pst (
+        location_id:int (notnull, sourcetypeid = '4', sourcetyperadix = '10', sourcetypedecimals = '0', sourcetypesize = '4'),
+        street_address:text (sourcetypeid = '12', sourcetyperadix = '10', sourcetypesize = '40'),
+        postal_code:text (sourcetypeid = '12', sourcetyperadix = '10', sourcetypesize = '12'),
+        city:text (notnull, sourcetypeid = '12', sourcetyperadix = '10', sourcetypesize = '30'),
+        state_province:text (sourcetypeid = '12', sourcetyperadix = '10', sourcetypesize = '25'),
+        country_id:text (sourcetypeid = '1', sourcetyperadix = '10', sourcetypesize = '2')
+    )
+    FOLDER = '/connectivity/base views'
+    CONSTRAINT 'LOC_ID_PK' PRIMARY KEY ( 'location_id' )
+    CACHE OFF
+    TIMETOLIVEINCACHE DEFAULT
+    ADD SEARCHMETHOD bv_hr_locations(
+        I18N us_pst
+        CONSTRAINTS (
+             ADD location_id (any) OPT ANY
+             ADD street_address (any) OPT ANY
+             ADD postal_code (any) OPT ANY
+             ADD city (any) OPT ANY
+             ADD state_province (any) OPT ANY
+             ADD country_id (any) OPT ANY
+        )
+        OUTPUTLIST (city, country_id, location_id, postal_code, state_province, street_address
+        )
+        WRAPPER (jdbc bv_hr_locations)
+    );
+

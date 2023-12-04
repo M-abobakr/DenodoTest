@@ -1,0 +1,44 @@
+﻿# REQUIRES-PROPERTIES-FILE - # Do not remove this comment!
+CREATE OR REPLACE WRAPPER JDBC bv_cc_customer
+    FOLDER = '/connectivity/base views'
+    DATASOURCENAME=ds_call_center
+    SCHEMANAME='${databases.training_db.folder.connectivity.folder.base views.views.jdbc.bv_cc_customer.SCHEMANAME}' 
+    RELATIONNAME='CUSTOMER' 
+    OUTPUTSCHEMA (
+        customer_id = 'CUSTOMER_ID' :'java.math.BigDecimal' (OPT) (sourcetyperadix='10', sourcetypeid='3', sourcetypename='NUMBER')  SORTABLE,
+        customer_name = 'CUSTOMER_NAME' :'java.lang.String' (OPT) (sourcetyperadix='10', sourcetypesize='21', sourcetypeid='12', sourcetypename='VARCHAR2')  SORTABLE,
+        customer_address = 'CUSTOMER_ADDRESS' :'java.lang.String' (OPT) (sourcetyperadix='10', sourcetypesize='27', sourcetypeid='12', sourcetypename='VARCHAR2')  SORTABLE,
+        phone_number = 'PHONE_NUMBER' :'java.lang.String' (OPT) (sourcetyperadix='10', sourcetypesize='17', sourcetypeid='12', sourcetypename='VARCHAR2')  SORTABLE,
+        customer_code = 'CUSTOMER_CODE' :'java.lang.String' (OPT) (sourcetyperadix='10', sourcetypesize='12', sourcetypeid='12', sourcetypename='VARCHAR2')  SORTABLE,
+        job_title = 'JOB_TITLE' :'java.lang.String' (OPT) (sourcetyperadix='10', sourcetypesize='36', sourcetypeid='12', sourcetypename='VARCHAR2')  SORTABLE,
+        other_details = 'OTHER_DETAILS' :'java.lang.String' (OPT) (sourcetyperadix='10', sourcetypesize='1000', sourcetypeid='12', sourcetypename='VARCHAR2')  SORTABLE
+    );
+
+CREATE OR REPLACE TABLE bv_cc_customer I18N us_pst (
+        customer_id:decimal (sourcetypeid = '3', sourcetyperadix = '10'),
+        customer_name:text (sourcetypeid = '12', sourcetyperadix = '10', sourcetypesize = '21'),
+        customer_address:text (sourcetypeid = '12', sourcetyperadix = '10', sourcetypesize = '27'),
+        phone_number:text (sourcetypeid = '12', sourcetyperadix = '10', sourcetypesize = '17'),
+        customer_code:text (sourcetypeid = '12', sourcetyperadix = '10', sourcetypesize = '12'),
+        job_title:text (sourcetypeid = '12', sourcetyperadix = '10', sourcetypesize = '36'),
+        other_details:text (sourcetypeid = '12', sourcetyperadix = '10', sourcetypesize = '1000')
+    )
+    FOLDER = '/connectivity/base views'
+    CACHE OFF
+    TIMETOLIVEINCACHE DEFAULT
+    ADD SEARCHMETHOD bv_cc_customer(
+        I18N us_pst
+        CONSTRAINTS (
+             ADD customer_id (any) OPT ANY
+             ADD customer_name (any) OPT ANY
+             ADD customer_address (any) OPT ANY
+             ADD phone_number (any) OPT ANY
+             ADD customer_code (any) OPT ANY
+             ADD job_title (any) OPT ANY
+             ADD other_details (any) OPT ANY
+        )
+        OUTPUTLIST (customer_address, customer_code, customer_id, customer_name, job_title, other_details, phone_number
+        )
+        WRAPPER (jdbc bv_cc_customer)
+    );
+

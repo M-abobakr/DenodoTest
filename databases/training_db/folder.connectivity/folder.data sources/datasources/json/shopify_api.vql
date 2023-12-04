@@ -1,0 +1,12 @@
+﻿# REQUIRES-PROPERTIES-FILE - # Do not remove this comment!
+CREATE OR REPLACE DATASOURCE JSON shopify_api
+    FOLDER = '/connectivity/data sources'
+    ROUTE HTTP 'http.CommonsHttpClientConnection,120000' GET '${databases.training_db.folder.connectivity.folder.data sources.datasources.json.shopify_api.ROUTE.HTTP.URL}'
+    PAGINATION_SETTINGS (
+      HEADER_WITH_NEXT_PAGE_URL = 'link'
+      MAX_NUMBER_OF_REQUESTS = 2 )
+    AUTHENTICATION BASIC ( 
+      USER '${databases.training_db.folder.connectivity.folder.data sources.datasources.json.shopify_api.ROUTE.HTTP.USER}'
+      PASSWORD '${databases.training_db.folder.connectivity.folder.data sources.datasources.json.shopify_api.ROUTE.HTTP.PASSWORD}' ${databases.training_db.folder.connectivity.folder.data sources.datasources.json.shopify_api.ROUTE.HTTP.PASSWORD.ENCRYPTED} )
+    PROXY OFF;
+
