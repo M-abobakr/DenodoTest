@@ -1,0 +1,73 @@
+﻿CREATE OR REPLACE WRAPPER JDBC bv_support_get_all_service_request
+    FOLDER = '/connectivity/base views'
+    DATASOURCENAME=ds_support_site
+    PACKAGENAME='PKG_SUPPORT_DB' 
+    PROCEDURENAME='PR_GET_ALL_SERVICE_REQUEST' 
+    OUTPUTSCHEMA (
+        sr_date = 'SR_DATE' :'java.time.LocalDateTime' (sourcetypedecimals='6', sourcetypesize='0', sourcetypeid='93', sourcetypename='TIMESTAMP')  NOT NULL NOT SORTABLE PARAMINDEX=1 PARAMTYPE=4 FROMFLATTEN='O_RECORD',
+        sr_description = 'SR_DESCRIPTION' :'java.lang.String' (sourcetypedecimals='0', sourcetypesize='2000', sourcetypeid='12', sourcetypename='VARCHAR2')  NOT NULL NOT SORTABLE PARAMINDEX=1 PARAMTYPE=4 FROMFLATTEN='O_RECORD',
+        customer_ip = 'CUSTOMER_IP' :'java.lang.String' (sourcetypedecimals='0', sourcetypesize='100', sourcetypeid='12', sourcetypename='VARCHAR2')  NOT NULL NOT SORTABLE PARAMINDEX=1 PARAMTYPE=4 FROMFLATTEN='O_RECORD',
+        global_case_id = 'GLOBAL_CASE_ID' :'java.math.BigDecimal' (sourcetypeid='2', sourcetypename='NUMBER')  NOT NULL NOT SORTABLE PARAMINDEX=1 PARAMTYPE=4 FROMFLATTEN='O_RECORD',
+        case_creation_date = 'CASE_CREATION_DATE' :'java.time.LocalDateTime' (sourcetypedecimals='6', sourcetypesize='0', sourcetypeid='93', sourcetypename='TIMESTAMP')  NOT SORTABLE PARAMINDEX=1 PARAMTYPE=4 FROMFLATTEN='O_RECORD',
+        case_closed_date = 'CASE_CLOSED_DATE' :'java.time.LocalDateTime' (sourcetypedecimals='6', sourcetypesize='0', sourcetypeid='93', sourcetypename='TIMESTAMP')  NOT SORTABLE PARAMINDEX=1 PARAMTYPE=4 FROMFLATTEN='O_RECORD',
+        case_summary = 'CASE_SUMMARY' :'java.lang.String' (sourcetypedecimals='0', sourcetypesize='2000', sourcetypeid='12', sourcetypename='VARCHAR2')  NOT NULL NOT SORTABLE PARAMINDEX=1 PARAMTYPE=4 FROMFLATTEN='O_RECORD',
+        status_code = 'STATUS_CODE' :'java.math.BigDecimal' (sourcetypedecimals='0', sourcetypesize='38', sourcetypeid='2', sourcetypename='NUMBER')  NOT NULL NOT SORTABLE PARAMINDEX=1 PARAMTYPE=4 FROMFLATTEN='O_RECORD',
+        status_description = 'STATUS_DESCRIPTION' :'java.lang.String' (sourcetypedecimals='0', sourcetypesize='200', sourcetypeid='12', sourcetypename='VARCHAR2')  NOT SORTABLE PARAMINDEX=1 PARAMTYPE=4 FROMFLATTEN='O_RECORD',
+        customer_code = 'CUSTOMER_CODE' :'java.lang.String' (sourcetypedecimals='0', sourcetypesize='20', sourcetypeid='12', sourcetypename='VARCHAR2')  NOT SORTABLE PARAMINDEX=1 PARAMTYPE=4 FROMFLATTEN='O_RECORD',
+        customer_name = 'CUSTOMER_NAME' :'java.lang.String' (sourcetypedecimals='0', sourcetypesize='50', sourcetypeid='12', sourcetypename='VARCHAR2')  NOT SORTABLE PARAMINDEX=1 PARAMTYPE=4 FROMFLATTEN='O_RECORD',
+        customer_address = 'CUSTOMER_ADDRESS' :'java.lang.String' (sourcetypedecimals='0', sourcetypesize='100', sourcetypeid='12', sourcetypename='VARCHAR2')  NOT SORTABLE PARAMINDEX=1 PARAMTYPE=4 FROMFLATTEN='O_RECORD',
+        customer_phone = 'CUSTOMER_PHONE' :'java.lang.String' (sourcetypedecimals='0', sourcetypesize='20', sourcetypeid='12', sourcetypename='VARCHAR2')  NOT SORTABLE PARAMINDEX=1 PARAMTYPE=4 FROMFLATTEN='O_RECORD',
+        customer_job_title = 'CUSTOMER_JOB_TITLE' :'java.lang.String' (sourcetypedecimals='0', sourcetypesize='50', sourcetypeid='12', sourcetypename='VARCHAR2')  NOT SORTABLE PARAMINDEX=1 PARAMTYPE=4 FROMFLATTEN='O_RECORD',
+        agent_id = 'AGENT_ID' :'java.math.BigDecimal' (sourcetypeid='2', sourcetypename='NUMBER')  NOT NULL NOT SORTABLE PARAMINDEX=1 PARAMTYPE=4 FROMFLATTEN='O_RECORD',
+        agent_code = 'AGENT_CODE' :'java.lang.String' (sourcetypedecimals='0', sourcetypesize='20', sourcetypeid='12', sourcetypename='VARCHAR2')  NOT NULL NOT SORTABLE PARAMINDEX=1 PARAMTYPE=4 FROMFLATTEN='O_RECORD',
+        agent_name = 'AGENT_NAME' :'java.lang.String' (sourcetypedecimals='0', sourcetypesize='100', sourcetypeid='12', sourcetypename='VARCHAR2')  NOT NULL NOT SORTABLE PARAMINDEX=1 PARAMTYPE=4 FROMFLATTEN='O_RECORD'
+    );
+
+CREATE OR REPLACE TABLE bv_support_get_all_service_request I18N us_pst (
+        sr_date:timestamp (notnull, sourcetypeid = '93', sourcetypedecimals = '6', sourcetypesize = '0'),
+        sr_description:text (notnull, sourcetypeid = '12', sourcetypedecimals = '0', sourcetypesize = '2000'),
+        customer_ip:text (notnull, sourcetypeid = '12', sourcetypedecimals = '0', sourcetypesize = '100'),
+        global_case_id:decimal (notnull, sourcetypeid = '3'),
+        case_creation_date:timestamp (sourcetypeid = '93', sourcetypedecimals = '6', sourcetypesize = '0'),
+        case_closed_date:timestamp (sourcetypeid = '93', sourcetypedecimals = '6', sourcetypesize = '0'),
+        case_summary:text (notnull, sourcetypeid = '12', sourcetypedecimals = '0', sourcetypesize = '2000'),
+        status_code:decimal (notnull, sourcetypeid = '3', sourcetypedecimals = '0', sourcetypesize = '38'),
+        status_description:text (sourcetypeid = '12', sourcetypedecimals = '0', sourcetypesize = '200'),
+        customer_code:text (sourcetypeid = '12', sourcetypedecimals = '0', sourcetypesize = '20'),
+        customer_name:text (sourcetypeid = '12', sourcetypedecimals = '0', sourcetypesize = '50'),
+        customer_address:text (sourcetypeid = '12', sourcetypedecimals = '0', sourcetypesize = '100'),
+        customer_phone:text (sourcetypeid = '12', sourcetypedecimals = '0', sourcetypesize = '20'),
+        customer_job_title:text (sourcetypeid = '12', sourcetypedecimals = '0', sourcetypesize = '50'),
+        agent_id:decimal (notnull, sourcetypeid = '3'),
+        agent_code:text (notnull, sourcetypeid = '12', sourcetypedecimals = '0', sourcetypesize = '20'),
+        agent_name:text (notnull, sourcetypeid = '12', sourcetypedecimals = '0', sourcetypesize = '100')
+    )
+    FOLDER = '/connectivity/base views'
+    CACHE OFF
+    TIMETOLIVEINCACHE DEFAULT
+    ADD SEARCHMETHOD bv_support_get_all_service_request(
+        I18N us_pst
+        CONSTRAINTS (
+             ADD sr_date NOS ZERO ()
+             ADD sr_description NOS ZERO ()
+             ADD customer_ip NOS ZERO ()
+             ADD global_case_id NOS ZERO ()
+             ADD case_creation_date NOS ZERO ()
+             ADD case_closed_date NOS ZERO ()
+             ADD case_summary NOS ZERO ()
+             ADD status_code NOS ZERO ()
+             ADD status_description NOS ZERO ()
+             ADD customer_code NOS ZERO ()
+             ADD customer_name NOS ZERO ()
+             ADD customer_address NOS ZERO ()
+             ADD customer_phone NOS ZERO ()
+             ADD customer_job_title NOS ZERO ()
+             ADD agent_id NOS ZERO ()
+             ADD agent_code NOS ZERO ()
+             ADD agent_name NOS ZERO ()
+        )
+        OUTPUTLIST (agent_code, agent_id, agent_name, case_closed_date, case_creation_date, case_summary, customer_address, customer_code, customer_ip, customer_job_title, customer_name, customer_phone, global_case_id, sr_date, sr_description, status_code, status_description
+        )
+        WRAPPER (jdbc bv_support_get_all_service_request)
+    );
+

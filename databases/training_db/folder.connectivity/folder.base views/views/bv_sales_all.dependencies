@@ -1,0 +1,4 @@
+﻿/databases/training_db/folder.connectivity/connectivity.vql
+/databases/training_db/folder.connectivity/folder.base views/base views.vql
+/databases/training_db/folder.connectivity/folder.data sources/data sources.vql
+/databases/training_db/folder.connectivity/folder.data sources/datasources/json/ds_sales.vql

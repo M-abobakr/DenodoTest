@@ -1,0 +1,5 @@
+﻿CREATE OR REPLACE VIEW iv_product_storage FOLDER = '/integration' AS SELECT bv_wo_storages.city AS city, bv_wo_storages.id AS storage_id, bv_product.productname AS product_name, bv_product.productid AS product_id, count(*) AS amount FROM (bv_product AS bv_product INNER JOIN bv_wo_stock AS bv_wo_stock ON bv_product.productid = bv_wo_stock.product_id ) INNER JOIN bv_wo_storages AS bv_wo_storages ON bv_wo_stock.storage_id = bv_wo_storages.id  GROUP BY bv_wo_storages.city, bv_wo_storages.id, bv_product.productname, bv_product.productid CONTEXT (DATAMOVEMENTPLAN = bv_product : JDBC db_web_orders);
+
+ALTER VIEW iv_product_storage
+ LAYOUT (bv_product = [50, 17, 200, 200], bv_wo_stock = [348, 17, 200, 200], bv_wo_storages = [210, 132, 200, 200]);
+

@@ -1,0 +1,9 @@
+﻿/databases/training_db/folder.integration/integration.vql
+/databases/training_db/folder.connectivity/connectivity.vql
+/databases/training_db/folder.connectivity/folder.base views/base views.vql
+/databases/training_db/folder.connectivity/folder.data sources/data sources.vql
+/databases/training_db/folder.connectivity/folder.data sources/datasources/jdbc/ds_call_center.vql
+/databases/training_db/folder.connectivity/folder.base views/views/bv_cc_service_call.vql
+/databases/training_db/folder.connectivity/folder.data sources/datasources/jdbc/ds_support_site.vql
+/databases/training_db/folder.connectivity/folder.base views/views/bv_support_get_all_service_request.vql
+/databases/training_db/folder.connectivity/folder.base views/views/iv_interactions.vql

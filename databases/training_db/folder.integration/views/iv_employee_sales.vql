@@ -1,0 +1,5 @@
+﻿CREATE OR REPLACE VIEW iv_employee_sales FOLDER = '/integration' AS SELECT bv_sales_all.employeeid AS employeeid, count(*) AS total_sales, sum(cast('decimal', bv_sales_all.totalprice)) AS total_price, to_localdate('yyyy/MM/dd', '1970/01/01') AS start_date, cast('localdate', now()) AS end_date FROM bv_sales_all WHERE saledate between to_localdate('yyyy', '1970') AND now() GROUP BY bv_sales_all.employeeid HAVING count(*) > 1;
+
+ALTER VIEW iv_employee_sales
+ LAYOUT (bv_sales_all = [163, 53, 200, 200]);
+

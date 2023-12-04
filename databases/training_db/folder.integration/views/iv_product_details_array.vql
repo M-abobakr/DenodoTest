@@ -1,0 +1,5 @@
+﻿CREATE OR REPLACE VIEW iv_product_details_array FOLDER = '/integration' AS SELECT (bv_product_details.return).product.code AS code, (bv_product_details.return).product.description AS description, (bv_product_details.return).product.warnings AS warnings, (bv_product_details.return).product.numresults AS numresults, (bv_product_details.return).product.productdetails AS productdetails FROM bv_product_details;
+
+ALTER VIEW iv_product_details_array
+ LAYOUT (bv_product_details = [20, 20, 200, 200]);
+
