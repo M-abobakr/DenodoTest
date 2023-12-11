@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Hello') {
             steps {
-                echo 'Hello ${params.PERSON}'
+                echo 'Hello ${ENV:PERSON}'
             }
         }
     }
