@@ -13,7 +13,7 @@ pipeline {
         stage('Hello') {
             steps {
                 echo "Hello ${params.PERSON}"
-                echo "Welcome ${Env.NAME}"
+                echo "Welcome ${NAME}"
             }
         }
     }
