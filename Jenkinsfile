@@ -11,9 +11,15 @@ pipeline {
 
     stages {
         stage('Hello') {
+            environment {
+                TEST_CREDENTIAL = credentials('testCredential')
+            }
+            
             steps {
                 echo "Hello ${params.PERSON}"
                 echo "Welcome ${NAME}"
+                echo "cred username: ${TEST_CREDENTIAL_USR}"
+                echo "cred password: ${TEST_CREDENTIAL_PSW}"
             }
         }
     }
