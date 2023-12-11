@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    environment { 
+        NAME = 'Mohamed'
+    }
+
     parameters {
         string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
     }
@@ -9,6 +13,7 @@ pipeline {
         stage('Hello') {
             steps {
                 echo "Hello ${params.PERSON}"
+                echo "Welcome ${Env.NAME}"
             }
         }
     }
