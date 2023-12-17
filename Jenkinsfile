@@ -35,7 +35,7 @@ pipeline {
 
         stage('Test access system variable') {
             steps {
-                bat(script: "echo $env:SPARK_HOME")
+                bat '''echo $env:SPARK_HOME'''
             }
         }
     }
