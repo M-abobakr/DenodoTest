@@ -35,7 +35,7 @@ pipeline {
 
         stage('Test access system variable') {
             steps {
-                bat '''echo $env:SPARK_HOME'''
+                bat "C:\\Denodo\\DenodoPlatform8.0\\bin\\export"
             }
         }
     }
