@@ -35,7 +35,7 @@ pipeline {
 
         stage('Test access system variable') {
             steps {
-                echo "Spark is: ${System.getenv('SPARK_HOME')}"
+                bat(script: "echo $env:SPARK_HOME")
             }
         }
     }
