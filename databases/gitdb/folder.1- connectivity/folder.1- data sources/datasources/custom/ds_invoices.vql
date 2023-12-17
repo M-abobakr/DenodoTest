@@ -1,0 +1,33 @@
+﻿# REQUIRES-PROPERTIES-FILE - # Do not remove this comment!
+CREATE OR REPLACE DATASOURCE CUSTOM ds_invoices
+    FOLDER = '/1- connectivity/1- data sources'
+    CLASSNAME='com.denodo.vdb.contrib.wrapper.xls.ExcelWrapper';
+
+CREATE OR REPLACE WRAPPER CUSTOM ds_invoices
+    FOLDER = '/1- connectivity'
+    DATASOURCENAME=ds_invoices
+    PARAMETERS (
+      'Type of file' = 'Excel 2007 or later (*.xlsx)',
+      'File location' = ROUTE LOCAL 'LocalConnection' '${databases.gitdb.folder.1- connectivity.views.custom.ds_invoices.File location.ROUTE.LOCAL.PATH}',
+      'Extract data from all sheets' = false,
+      'Extract sheet name as a new column' = false,
+      'Has headers' = true,
+      'Stream tuples' = false
+    )
+    OUTPUTSCHEMA (
+        invoice_id = 'invoice_id' : 'java.lang.Double' (OPT) (sourcetypeid='8')  SORTABLE,
+        date_invoice = 'date_invoice' : 'java.lang.String' (OPT) (sourcetypeid='12')  SORTABLE,
+        order_id = 'order_id' : 'java.lang.Double' (OPT) (sourcetypeid='8')  SORTABLE,
+        date_placed = 'date_placed' : 'java.lang.String' (OPT) (sourcetypeid='12')  SORTABLE,
+        date_delivered = 'date_delivered' : 'java.lang.String' (OPT) (sourcetypeid='12')  SORTABLE,
+        date_closed = 'date_closed' : 'java.lang.String' (OPT) (sourcetypeid='12')  SORTABLE,
+        first_name = 'first_name' : 'java.lang.String' (OPT) (sourcetypeid='12')  SORTABLE,
+        last_name = 'last_name' : 'java.lang.String' (OPT) (sourcetypeid='12')  SORTABLE,
+        email = 'email' : 'java.lang.String' (OPT) (sourcetypeid='12')  SORTABLE,
+        address = 'address' : 'java.lang.String' (OPT) (sourcetypeid='12')  SORTABLE,
+        country = 'country' : 'java.lang.String' (OPT) (sourcetypeid='12')  SORTABLE,
+        postal_code = 'postal_code' : 'java.lang.Double' (OPT) (sourcetypeid='8')  SORTABLE,
+        phone = 'phone' : 'java.lang.String' (OPT) (sourcetypeid='12')  SORTABLE,
+        amount = 'amount' : 'java.lang.Double' (OPT) (sourcetypeid='8')  SORTABLE
+    );
+

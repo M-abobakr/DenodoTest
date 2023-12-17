@@ -1,0 +1,5 @@
+﻿CREATE OR REPLACE VIEW p_bv_invoices FOLDER = '/2- integration' AS SELECT country AS country_name_1, last_name AS last_name, first_name AS first_name, order_id AS order_id, invoice_id AS invoice_id, (order_id/2) AS new_field, (order_id/3) AS new_filed_2 FROM bv_invoices GROUP BY country, first_name, last_name, order_id, invoice_id HAVING country = 'China' ORDER BY order_id DESC;
+
+ALTER VIEW p_bv_invoices
+ LAYOUT (bv_invoices = [20, 20, 200, 200]);
+
