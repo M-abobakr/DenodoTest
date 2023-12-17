@@ -26,7 +26,8 @@ pipeline {
         
         stage('Test Solution manager APIs') {
             steps {
-                bat(returnStdout: true, script: "curl http://kubernetes.docker.internal:10090/environments -u admin:admin")
+                def output = bat(returnStdout: true, script: "curl http://kubernetes.docker.internal:10090/environments -u admin:admin")
+                println(output.readLines())
             }
         }
     }
