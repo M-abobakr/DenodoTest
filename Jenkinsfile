@@ -35,7 +35,7 @@ pipeline {
 
         stage('Test access system variable') {
             steps {
-                bat "C:\\Denodo\\DenodoPlatform8.0\\bin\\export"
+                bat "C:\\Denodo\\DenodoPlatform8.0\\bin\\export --login admin --password admin --server //localhost/api_tutorial --file C:\\Users\\mhassan\\Downloads\\test2.vql"
             }
         }
     }
