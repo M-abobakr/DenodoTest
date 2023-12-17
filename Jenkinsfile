@@ -28,8 +28,14 @@ pipeline {
             steps {
                 script {
                     def output = bat(returnStdout: true, script: "curl http://kubernetes.docker.internal:10090/environments -u admin:admin")
-                    println(output.readLines())
+                    println(output.readLines().last().trim())
                 }
+            }
+        }
+
+        stage('Test access system variable') {
+            steps {
+                echo "Spark is: ${System.getenv('SPARK_HOME')}"
             }
         }
     }
