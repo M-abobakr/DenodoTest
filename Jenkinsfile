@@ -23,6 +23,12 @@ pipeline {
                 echo "cred: ${TEST_CREDENTIAL}"
             }
         }
+        
+        stage('Test Solution manager APIs') {
+            steps {
+                curl http://kubernetes.docker.internal:10090/environments -u admin:admin
+            }
+        }
     }
 
     post {
