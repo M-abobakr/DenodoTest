@@ -26,7 +26,7 @@ pipeline {
         
         stage('Test Solution manager APIs') {
             steps {
-                curl http://kubernetes.docker.internal:10090/environments -u admin:admin
+                bat(returnStdout: true, script: "curl http://kubernetes.docker.internal:10090/environments -u admin:admin")
             }
         }
     }
