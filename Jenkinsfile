@@ -1,4 +1,4 @@
-@library('encoding-library') _
+@Library('encoding-library') _
 
 pipeline {
     agent any
@@ -43,10 +43,8 @@ pipeline {
 
         stage('Test shared library') {
             steps {
-                script{
-                    log.info("some message")
-                    log.sayHello("Abobakr")
-                }
+                log.info("some message")
+                log.sayHello("Abobakr")
             }
         }
     }
