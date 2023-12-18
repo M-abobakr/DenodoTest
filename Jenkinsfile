@@ -43,8 +43,10 @@ pipeline {
 
         stage('Test shared library') {
             steps {
-                log.info("some message")
-                log.sayHello("Abobakr")
+                script {
+                    log.info("some message")
+                    log.sayHello("Abobakr")
+                }
             }
         }
     }
