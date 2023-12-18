@@ -1,3 +1,5 @@
+@library('encoding-library') _
+
 pipeline {
     agent any
 
@@ -33,9 +35,16 @@ pipeline {
             }
         }
 
-        stage('Test access system variable') {
+        // stage('Test access system variable') {
+        //     steps {
+        //         bat "C:\\Denodo\\DenodoPlatform8.0\\bin\\export --login admin --password admin --server //localhost/api_tutorial --file C:\\Users\\mhassan\\Downloads\\test2.vql"
+        //     }
+        // }
+
+        stage('Test shared library') {
             steps {
-                bat "C:\\Denodo\\DenodoPlatform8.0\\bin\\export --login admin --password admin --server //localhost/api_tutorial --file C:\\Users\\mhassan\\Downloads\\test2.vql"
+                log.info("some message")
+                log.sayHello("Abobakr")
             }
         }
     }
