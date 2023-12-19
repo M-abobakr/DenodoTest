@@ -42,41 +42,39 @@ pipeline {
         //     }
         // }
 
-        // stage('Test access system variable') {
-        //     steps {
-        //         bat "C:\\Denodo\\DenodoPlatform8.0\\bin\\export --login admin --password admin --server //localhost/gitdb --file C:\\Users\\mhassan\\Downloads\\gitdb.vql"
-        //     }
-        // }
+        stage('Test access system variable') {
+            steps {
+                bat "C:\\Denodo\\DenodoPlatform8.0\\bin\\export --login admin --password admin --server //localhost/gitdb --file C:\\Users\\mhassan\\Downloads\\gitdb.vql"
+            }
+        }
 
         stage('Test shared library') {
             steps {
                 script {
-                    def vqlFileContent = bat(returnStdout: true, script: "@cat C:\\Users\\mhassan\\Downloads\\gitdb.vql")
+                    def vqlFileContent = bat(encoding: 'UTF-8', returnStdout: true, script: "@cat C:\\Users\\mhassan\\Downloads\\gitdb.vql")
                     def encodedVqlString = encode.encode(vqlFileContent)
 
-println("filllle : " + vqlFileContent)
-println(encodedVqlString)
-                    // def revisionCreationResponse = bat(returnStdout: true, script: "@curl -u admin:admin -d \"{\\\"name\\\":\\\"jenkins_revision\\\",\\\"content\\\":\\\"${encodedVqlString}\\\",\\\"replace\\\":\\\"REPLACE_EXISTING\\\"}\" -H \"Content-Type:application/json\" -X POST http://kubernetes.docker.internal:10090/revisions/loadFromVQL")
-                    // def map = parseJsonToMap(revisionCreationResponse.toString())
-                    // def revisionIds = [map.id]
+                    println(encodedVqlString[4..-1])
+                    def revisionCreationResponse = bat(returnStdout: true, script: "@curl -u admin:admin -d \"{\\\"name\\\":\\\"jenkins_revision\\\",\\\"content\\\":\\\"${encodedVqlString[4..-1]}\\\",\\\"replace\\\":\\\"REPLACE_EXISTING\\\"}\" -H \"Content-Type:application/json\" -X POST http://kubernetes.docker.internal:10090/revisions/loadFromVQL")
+                    def map = parseJsonToMap(revisionCreationResponse.toString())
+                    def revisionIds = [map.id]
 
-                    // def res = bat(returnStdout: true, script: "curl -u admin:admin -d \"{\\\"revisionIds\\\":${revisionIds},\\\"environmentId\\\":${1}}\" -H \"Content-Type: application/json\" -X POST http://kubernetes.docker.internal:10090/deployments")
-                    // println(res)
+                    def res = bat(returnStdout: true, script: "curl -u admin:admin -d \"{\\\"revisionIds\\\":${revisionIds},\\\"environmentId\\\":${1}}\" -H \"Content-Type: application/json\" -X POST http://kubernetes.docker.internal:10090/deployments")
                 }
             }
         }
     }
 
-    post {
-        always { 
-            echo 'I will always say Hello again!'
-        }
-        success {
-            echo 'I will say Hello only if job is success'
-        }
-        failure {
-            echo 'I will say Hello only if job is failure'
-        }
-    }
+    // post {
+    //     always { 
+    //         echo 'I will always say Hello again!'
+    //     }
+    //     success {
+    //         echo 'I will say Hello only if job is success'
+    //     }
+    //     failure {
+    //         echo 'I will say Hello only if job is failure'
+    //     }
+    // }
 }
 
