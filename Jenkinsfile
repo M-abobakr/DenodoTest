@@ -57,13 +57,15 @@ pipeline {
                    // def jsonSlurper = new JsonSlurper()
                     def revisionCreationResponse = bat(returnStdout: true, script: "@curl -u admin:admin -d \"{\\\"name\\\":\\\"jenkins_revision\\\",\\\"content\\\":\\\"${encodedVqlString}\\\"}\" -H \"Content-Type:application/json\" -X POST http://kubernetes.docker.internal:10090/revisions/loadFromVQL")
                     println("respoooonse")
-                    println("bakooor: " + revisionCreationResponse.readLines().last().trim())
+                    println("bakooor: " + revisionCreationResponse)
                     println("bakoor string: "+ vqlFileContent)
                     def map = parseJsonToMap(revisionCreationResponse.toString())
                     println("id++++++++++")
                     println(map)
 
-                    bat(returnStdout: true, script: "@curl -u admin:admin -d \"{\\\"revisionIds\\\":\\\"${[map.id]}\\\",\\\"environmentId\\\":\\\"${1}\\\"}\" -H \"Content-Type: application/json\" -X POST http://kubernetes.docker.internal:10090/deployments")
+                    def res = bat(returnStdout: true, script: "curl -u admin:admin -d \"{\\\"revisionIds\\\":\\\"${[map.id]}\\\",\\\"environmentId\\\":\\\"${1}\\\"}\" -H \"Content-Type: application/json\" -X POST http://kubernetes.docker.internal:10090/deployments")
+                    println("deplooooy")
+                    println(res)
                 }
             }
         }
