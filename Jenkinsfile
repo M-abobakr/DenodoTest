@@ -52,7 +52,7 @@ pipeline {
             steps {
                 script {
                     def vqlFileContent = bat(encoding: 'UTF-8', returnStdout: true, script: "@cat C:\\Users\\mhassan\\Downloads\\gitdb.vql")
-                    def encodedVqlString = encode.encode(vqlFileContent.trim())
+                    def encodedVqlString = encode.encode(vqlFileContent)
 
 println("filllle : " + vqlFileContent)
 println("balkkor: " + encodedVqlString)
