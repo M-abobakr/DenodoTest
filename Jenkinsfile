@@ -10,8 +10,8 @@ def parseJsonToMap(String json) {
 pipeline {
     agent any
 
-    def sourceEnvId
-    def targetEnvId
+    // def sourceEnvId
+    // def targetEnvId
 
     environment { 
         DenodoUserName = "admin"
@@ -60,10 +60,11 @@ pipeline {
 
         stage ('List Environments') {
             steps {
-                def environments = httpRequest url: ${SolutionManagerHost}+"/environments"
-                                               authenticate: 'DenodoAPIsCredential'
+                script{
+                    def environments = httpRequest url: ${SolutionManagerHost}+"/environments" authenticate: 'DenodoAPIsCredential'
                 
-                println(environments)                               
+                    println(environments)    
+                }                           
             }
         }
         // stage('Test shared library') {
