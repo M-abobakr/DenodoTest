@@ -61,7 +61,9 @@ pipeline {
         stage ('List Environments') {
             steps {
                 script{
-                    def environments = httpRequest url: SolutionManagerHost+"/environments", authenticate: 'DenodoAPIsCredential'
+                    def auth = DenodoUserName + ":" + DenodoPassword
+                    def environments = httpRequest url: SolutionManagerHost+"/environments", customHeaders:[[name:'Authorization', value:"Basic ${auth}"]]
+
                 
                     println(environments)    
                 }                           
