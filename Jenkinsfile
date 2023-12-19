@@ -10,12 +10,22 @@ def parseJsonToMap(String json) {
 pipeline {
     agent any
 
+    def sourceEnvId
+    def targetEnvId
+
     environment { 
-        NAME = 'Mohamed'
+        DenodoUserName = "admin"
+        DenodoPassword = "admin"
+        ExportedDbVqlPath = "C:\\Users\\mhassan\\Downloads"
+        ExportScriptPath = "C:\\Denodo\\DenodoPlatform8.0\\bin\\export"
+        SolutionManagerHost = "http://kubernetes.docker.internal:10090"
+        DenodoAPIsCredential = credentials('DenodoAPIsCredential')
     }
 
     parameters {
-        string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
+        string(name: 'SourceEnvName', defaultValue: '', description: 'Name of source environment')
+        string(name: 'TergetEnvName', defaultValue: '', description: 'Name of target environment')
+        string(name: 'DatabaseToExport', defaultValue: '', description: 'Database name to export from Denodo dataPort server.')
     }
 
     stages {
@@ -42,27 +52,35 @@ pipeline {
         //     }
         // }
 
-        stage('Test access system variable') {
+        // stage('Export database') {
+        //     steps {
+        //         bat "${ExportScriptPath} --login ${DenodoUserName} --password ${DenodoPassword} --server //localhost/${params.DatabaseToExport} --file ${ExportedDbVqlPath}\\gitdb.vql"
+        //     }
+        // }
+
+        stage ('List Environments') {
             steps {
-                bat "C:\\Denodo\\DenodoPlatform8.0\\bin\\export --login admin --password admin --server //localhost/gitdb --file C:\\Users\\mhassan\\Downloads\\gitdb.vql"
+                def environments = httpRequest url: ${SolutionManagerHost}+"/environments"
+                                               authenticate: 'DenodoAPIsCredential'
+                
+                println(environments)                               
             }
         }
+        // stage('Test shared library') {
+        //     steps {
+        //         script {
+        //             def vqlFileContent = bat(encoding: 'UTF-8', returnStdout: true, script: "@cat C:\\Users\\mhassan\\Downloads\\gitdb.vql")
+        //             def encodedVqlString = encode.encode(vqlFileContent)
 
-        stage('Test shared library') {
-            steps {
-                script {
-                    def vqlFileContent = bat(encoding: 'UTF-8', returnStdout: true, script: "@cat C:\\Users\\mhassan\\Downloads\\gitdb.vql")
-                    def encodedVqlString = encode.encode(vqlFileContent)
+        //             println(encodedVqlString[4..-1])
+        //             def revisionCreationResponse = bat(returnStdout: true, script: "@curl -u admin:admin -d \"{\\\"name\\\":\\\"jenkins_revision\\\",\\\"content\\\":\\\"${encodedVqlString[4..-1]}\\\",\\\"replace\\\":\\\"REPLACE_EXISTING\\\"}\" -H \"Content-Type:application/json\" -X POST http://kubernetes.docker.internal:10090/revisions/loadFromVQL")
+        //             def map = parseJsonToMap(revisionCreationResponse.toString())
+        //             def revisionIds = [map.id]
 
-                    println(encodedVqlString[4..-1])
-                    def revisionCreationResponse = bat(returnStdout: true, script: "@curl -u admin:admin -d \"{\\\"name\\\":\\\"jenkins_revision\\\",\\\"content\\\":\\\"${encodedVqlString[4..-1]}\\\",\\\"replace\\\":\\\"REPLACE_EXISTING\\\"}\" -H \"Content-Type:application/json\" -X POST http://kubernetes.docker.internal:10090/revisions/loadFromVQL")
-                    def map = parseJsonToMap(revisionCreationResponse.toString())
-                    def revisionIds = [map.id]
-
-                    def res = bat(returnStdout: true, script: "curl -u admin:admin -d \"{\\\"revisionIds\\\":${revisionIds},\\\"environmentId\\\":${1}}\" -H \"Content-Type: application/json\" -X POST http://kubernetes.docker.internal:10090/deployments")
-                }
-            }
-        }
+        //             def res = bat(returnStdout: true, script: "curl -u admin:admin -d \"{\\\"revisionIds\\\":${revisionIds},\\\"environmentId\\\":${1}}\" -H \"Content-Type: application/json\" -X POST http://kubernetes.docker.internal:10090/deployments")
+        //         }
+        //     }
+        // }
     }
 
     // post {
