@@ -44,7 +44,7 @@ pipeline {
         stage('Test shared library') {
             steps {
                 script {
-                    def vqlFileContent = bat(returnStdout: true, script: "cat C:\\Users\\mhassan\\Downloads\\gitDb2.vql").readLines().last().trim()
+                    def vqlFileContent = bat(returnStdout: true, script: "cat C:\\Users\\mhassan\\Downloads\\gitDb2.vql")
                     println(vqlFileContent)
                     def encodedVqlString = encode.encode(vqlFileContent)
 
