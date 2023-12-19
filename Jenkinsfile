@@ -60,10 +60,9 @@ pipeline {
                     println("bakooor: " + revisionCreationResponse)
                     println("bakoor string: "+ vqlFileContent)
                     def map = parseJsonToMap(revisionCreationResponse.toString())
-                    def revisionIds = new int[1]
-                    revisionIds[0] = map.id
+                    def revisionIds = [map.id]
 
-                    def res = bat(returnStdout: true, script: "curl -u admin:admin -d \"{\\\"revisionIds\\\":\\\"${revisionIds}\\\",\\\"environmentId\\\":\\\"${1}\\\"}\" -H \"Content-Type: application/json\" -X POST http://kubernetes.docker.internal:10090/deployments")
+                    def res = bat(returnStdout: true, script: "curl -u admin:admin -d \"{\\\"revisionIds\\\":${revisionIds},\\\"environmentId\\\":\\\"${1}\\\"}\" -H \"Content-Type: application/json\" -X POST http://kubernetes.docker.internal:10090/deployments")
                     println("deplooooy")
                     println(res)
                 }
