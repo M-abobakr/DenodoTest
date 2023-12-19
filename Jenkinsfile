@@ -54,6 +54,7 @@ pipeline {
                     def vqlFileContent = bat(encoding: 'UTF-8', returnStdout: true, script: "@cat C:\\Users\\mhassan\\Downloads\\gitdb.vql")
                     def encodedVqlString = encode.encode(vqlFileContent.trim())
 
+println("filllle : " + vqlFileContent)
 println("balkkor: " + encodedVqlString)
                     def revisionCreationResponse = bat(returnStdout: true, script: "@curl -u admin:admin -d \"{\\\"name\\\":\\\"jenkins_revision\\\",\\\"content\\\":\\\"${encodedVqlString}\\\",\\\"replace\\\":\\\"REPLACE_EXISTING\\\"}\" -H \"Content-Type:application/json\" -X POST http://kubernetes.docker.internal:10090/revisions/loadFromVQL")
                     def map = parseJsonToMap(revisionCreationResponse.toString())
