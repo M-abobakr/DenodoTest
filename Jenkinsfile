@@ -45,6 +45,7 @@ pipeline {
             steps {
                 script {
                     def vqlFileContent = bat(returnStdout: true, script: "cat C:\\Users\\mhassan\\Downloads\\gitDb2.vql").readLines().last().trim()
+                    println(vqlFileContent)
                     def encodedVqlString = encode.encode(vqlFileContent)
 
                     println(encodedVqlString)
