@@ -55,7 +55,6 @@ pipeline {
                     def encodedVqlString = encode.encode(vqlFileContent.trim())
 
 println("balkkor: " + encodedVqlString)
-                   // def jsonSlurper = new JsonSlurper()
                     def revisionCreationResponse = bat(returnStdout: true, script: "@curl -u admin:admin -d \"{\\\"name\\\":\\\"jenkins_revision\\\",\\\"content\\\":\\\"${encodedVqlString}\\\",\\\"replace\\\":\\\"REPLACE_EXISTING\\\"}\" -H \"Content-Type:application/json\" -X POST http://kubernetes.docker.internal:10090/revisions/loadFromVQL")
                     def map = parseJsonToMap(revisionCreationResponse.toString())
                     def revisionIds = [map.id]
