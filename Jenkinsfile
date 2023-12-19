@@ -53,8 +53,8 @@ pipeline {
                     println("respoooonse")
                     println(revisionCreationResponse)
                     def parsedResonse = jsonSlurper.parseText(revisionCreationResponse)
-                    println("id")
-                    println(parsedResonse.id)
+                    println("id++++++++++")
+                    println(parsedResonse)
 
                     bat(returnStdout: true, script: "curl -u admin:admin -d \"{\\\"revisionIds\\\":\\\"${[parsedResonse.id]}\\\",\\\"environmentId\\\":\\\"${1}\\\"}\" -H \"Content-Type: application/json\" -X POST http://kubernetes.docker.internal:10090/deployments")
                 }
