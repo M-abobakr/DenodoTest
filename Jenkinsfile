@@ -1,5 +1,11 @@
 @Library('encoding-library') _
-import groovy.json.JsonSlurper
+import groovy.json.JsonSlurperClassic
+
+@NonCPS
+def parseJsonToMap(String json) {
+    final slurper = new JsonSlurperClassic()
+    return new HashMap<>(slurper.parseText(json))
+}
 
 pipeline {
     agent any
@@ -52,11 +58,11 @@ pipeline {
                     def revisionCreationResponse = bat(returnStdout: true, script: "curl -u admin:admin -d \"{\\\"name\\\":\\\"jenkins_revision\\\",\\\"content\\\":\\\"${encodedVqlString}\\\"}\" -H \"Content-Type:application/json\" -X POST http://kubernetes.docker.internal:10090/revisions/loadFromVQL")
                     println("respoooonse")
                     println(revisionCreationResponse)
-                    def parsedResonse = jsonSlurper.parseText(revisionCreationResponse.toString())
+                    def map = parseJsonToMap(revisionCreationResponse.toString())
                     println("id++++++++++")
-                    println(parsedResonse)
+                    println(map)
 
-                    bat(returnStdout: true, script: "curl -u admin:admin -d \"{\\\"revisionIds\\\":\\\"${[parsedResonse.id]}\\\",\\\"environmentId\\\":\\\"${1}\\\"}\" -H \"Content-Type: application/json\" -X POST http://kubernetes.docker.internal:10090/deployments")
+                    bat(returnStdout: true, script: "curl -u admin:admin -d \"{\\\"revisionIds\\\":\\\"${[map.id]}\\\",\\\"environmentId\\\":\\\"${1}\\\"}\" -H \"Content-Type: application/json\" -X POST http://kubernetes.docker.internal:10090/deployments")
                 }
             }
         }
