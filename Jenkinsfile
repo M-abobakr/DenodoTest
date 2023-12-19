@@ -1,4 +1,5 @@
 @Library('encoding-library') _
+import groovy.json.JsonSlurper
 
 pipeline {
     agent any
