@@ -51,11 +51,11 @@ pipeline {
         stage('Test shared library') {
             steps {
                 script {
-                    def vqlFileContent = bat(returnStdout: true, script: "cat C:\\Users\\mhassan\\Downloads\\gitDb2.vql")
+                    def vqlFileContent = bat(returnStdout: true, script: "@cat C:\\Users\\mhassan\\Downloads\\gitDb2.vql")
                     def encodedVqlString = encode.encode(vqlFileContent)
 
                    // def jsonSlurper = new JsonSlurper()
-                    def revisionCreationResponse = bat(returnStdout: true, script: "curl -u admin:admin -d \"{\\\"name\\\":\\\"jenkins_revision\\\",\\\"content\\\":\\\"${encodedVqlString}\\\"}\" -H \"Content-Type:application/json\" -X POST http://kubernetes.docker.internal:10090/revisions/loadFromVQL")
+                    def revisionCreationResponse = bat(returnStdout: true, script: "@curl -u admin:admin -d \"{\\\"name\\\":\\\"jenkins_revision\\\",\\\"content\\\":\\\"${encodedVqlString}\\\"}\" -H \"Content-Type:application/json\" -X POST http://kubernetes.docker.internal:10090/revisions/loadFromVQL")
                     println("respoooonse")
                     println("bakooor: " + revisionCreationResponse.readLines().last().trim())
                     println("bakoor string: "+ vqlFileContent)
@@ -63,7 +63,7 @@ pipeline {
                     println("id++++++++++")
                     println(map)
 
-                    bat(returnStdout: true, script: "curl -u admin:admin -d \"{\\\"revisionIds\\\":\\\"${[map.id]}\\\",\\\"environmentId\\\":\\\"${1}\\\"}\" -H \"Content-Type: application/json\" -X POST http://kubernetes.docker.internal:10090/deployments")
+                    bat(returnStdout: true, script: "@curl -u admin:admin -d \"{\\\"revisionIds\\\":\\\"${[map.id]}\\\",\\\"environmentId\\\":\\\"${1}\\\"}\" -H \"Content-Type: application/json\" -X POST http://kubernetes.docker.internal:10090/deployments")
                 }
             }
         }
