@@ -49,7 +49,7 @@ pipeline {
                     def encodedVqlString = encode.encode(vqlFileContent)
 
                    // def jsonSlurper = new JsonSlurper()
-                    def revisionCreationResponse = bat(returnStdout: true, script: "curl -u admin:admin -d \"name=jenkins_revision&content=${encodedVqlString}\" -X POST http://kubernetes.docker.internal:10090/revisions/loadFromVQL")
+                    def revisionCreationResponse = bat(returnStdout: true, script: "curl -u admin:admin -d \"{\\\"name\\\":\\\"jenkins_revision\\\"}\" -X POST http://kubernetes.docker.internal:10090/revisions/loadFromVQL")
                     println("respoooonse")
                     println(revisionCreationResponse)
                     //
