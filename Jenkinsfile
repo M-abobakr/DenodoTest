@@ -48,15 +48,11 @@ pipeline {
                     def vqlFileContent = bat(returnStdout: true, script: "cat C:\\Users\\mhassan\\Downloads\\gitDb2.vql")
                     def encodedVqlString = encode.encode(vqlFileContent)
 
-                    def jsonSlurper = new JsonSlurper()
-                    def requestBody = "{\\\"name\\\": \\\"jenkins_revision\\\", \\\"content\\\": \\\"${encodedVqlString}\\\"}"
-                    def contentType = "Content-Type: application/json"
-                    def revisionCreationResponse = bat(returnStdout: true, script: "curl -u admin:admin -d \"${requestBody}\" -H \"${contentType}\" -X POST http://kubernetes.docker.internal:10090/revisions/loadFromVQL")
+                   // def jsonSlurper = new JsonSlurper()
+                    def revisionCreationResponse = bat(returnStdout: true, script: "curl -u admin:admin -d \"name=jenkins_revision&content=${encodedVqlString}\" -X POST http://kubernetes.docker.internal:10090/revisions/loadFromVQL")
                     println("respoooonse")
                     println(revisionCreationResponse)
-                    def parsedResonse = jsonSlurper.parseText(revisionCreationResponse)
-                    println("id")
-                    println(parsedResonse.id)
+                    //
 
                     //bat(returnStdout: true, script: "curl -u admin:admin -d '{\"revisionIds\": ${[parsedResonse.id]}, \"environmentId\": ${1}}' -H \"Content-Type: application/json\" -X POST http://kubernetes.docker.internal:10090/deployments")
                 }
